@@ -1,0 +1,156 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+    <display-name>Pathlopedia</display-name>
+
+    <!-- /f/get/attachment/image -->
+    <servlet>
+        <servlet-name>GetAttachmentForImageServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.GetAttachmentForImageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetAttachmentForImageServlet</servlet-name>
+        <url-pattern>/f/get/attachment/image</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/get/attachment -->
+    <servlet>
+        <servlet-name>GetAttachmentServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.GetAttachmentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetAttachmentServlet</servlet-name>
+        <url-pattern>/f/get/attachment</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/get/point -->
+    <servlet>
+        <servlet-name>GetPointServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.GetPointServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetPointServlet</servlet-name>
+        <url-pattern>/f/get/point</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/get/points -->
+    <servlet>
+        <servlet-name>GetPointsServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.GetPointsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetPointsServlet</servlet-name>
+        <url-pattern>/f/get/points</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/new/attachment/image -->
+    <servlet>
+        <servlet-name>NewAttachmentForImageServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.NewAttachmentForImageServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NewAttachmentForImageServlet</servlet-name>
+        <url-pattern>/f/new/attachment/image</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/new/comment/attachment -->
+    <servlet>
+        <servlet-name>NewCommentForAttachmentServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.NewCommentForAttachmentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NewCommentForAttachmentServlet</servlet-name>
+        <url-pattern>/f/new/comment/attachment</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/new/comment/point -->
+    <servlet>
+        <servlet-name>NewCommentForPointServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.NewCommentForPointServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NewCommentForPointServlet</servlet-name>
+        <url-pattern>/f/new/comment/point</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/new/point -->
+    <servlet>
+        <servlet-name>NewPointServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.NewPointServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NewPointServlet</servlet-name>
+        <url-pattern>/f/new/point</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/new/user -->
+    <servlet>
+        <servlet-name>NewUserServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.NewUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>NewUserServlet</servlet-name>
+        <url-pattern>/f/new/user</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/set/score/attachment -->
+    <servlet>
+        <servlet-name>SetScoreForAttachmentServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.SetScoreForAttachmentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SetScoreForAttachmentServlet</servlet-name>
+        <url-pattern>/f/set/score/attachment</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/set/score/comment -->
+    <servlet>
+        <servlet-name>SetScoreForCommentServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.SetScoreForCommentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SetScoreForCommentServlet</servlet-name>
+        <url-pattern>/f/set/score/comment</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/set/score/point -->
+    <servlet>
+        <servlet-name>SetScoreForPointServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.SetScoreForPointServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SetScoreForPointServlet</servlet-name>
+        <url-pattern>/f/set/score/point</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/set/user/login -->
+    <servlet>
+        <servlet-name>SetUserLoginServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.SetUserLoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SetUserLoginServlet</servlet-name>
+        <url-pattern>/f/set/user/login</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/set/user/logout -->
+    <servlet>
+        <servlet-name>SetUserLogoutServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.SetUserLogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SetUserLogoutServlet</servlet-name>
+        <url-pattern>/f/set/user/logout</url-pattern>
+    </servlet-mapping>
+
+    <!-- default -->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/</url-pattern>
+        <url-pattern>/s/*.html</url-pattern>
+        <url-pattern>/s/*.js</url-pattern>
+        <url-pattern>/s/*.png</url-pattern>
+    </servlet-mapping>
+</web-app>
