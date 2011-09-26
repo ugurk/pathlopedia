@@ -1,7 +1,7 @@
 package com.pathlopedia.servlet.base;
 
-import com.pathlopedia.servlet.entity.JSONResponse;
-import com.pathlopedia.servlet.entity.WritableResponse;
+import com.pathlopedia.servlet.response.JSONResponse;
+import com.pathlopedia.servlet.response.WritableResponse;
 import com.pathlopedia.util.Logger;
 
 import javax.servlet.ServletException;

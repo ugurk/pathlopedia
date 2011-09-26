@@ -7,7 +7,7 @@ import com.pathlopedia.ds.entity.Image;
 import java.util.Date;
 import java.util.List;
 
-public final class GetPointResponse {
+public final class PointEntity {
     public final String id;
     public final Coordinate location;
     public final String userId;
@@ -17,7 +17,7 @@ public final class GetPointResponse {
     public final int score;
     public final boolean isScored;
     public final Date updatedAt;
-    public final List<CommentResponse> comments;
+    public final List<CommentEntity> comments;
     public final List<AttachmentResponse> attachments;
 
     public static final class AttachmentResponse {
@@ -38,7 +38,7 @@ public final class GetPointResponse {
         }
     }
 
-    public GetPointResponse(
+    public PointEntity(
             String id,
             Coordinate location,
             String userId,
@@ -48,7 +48,7 @@ public final class GetPointResponse {
             int score,
             boolean scored,
             Date updatedAt,
-            List<CommentResponse> comments,
+            List<CommentEntity> comments,
             List<AttachmentResponse> attachments) {
         this.id = id;
         this.location = location;

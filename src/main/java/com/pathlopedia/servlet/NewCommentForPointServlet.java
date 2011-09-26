@@ -6,9 +6,9 @@ import com.pathlopedia.ds.entity.Comment;
 import com.pathlopedia.ds.entity.Parent;
 import com.pathlopedia.ds.entity.Point;
 import com.pathlopedia.ds.entity.User;
-import com.pathlopedia.servlet.entity.JSONResponse;
-import com.pathlopedia.servlet.entity.ObjectIdResponse;
-import com.pathlopedia.servlet.entity.WritableResponse;
+import com.pathlopedia.servlet.response.JSONResponse;
+import com.pathlopedia.servlet.entity.ObjectIdEntity;
+import com.pathlopedia.servlet.response.WritableResponse;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 
 import javax.servlet.ServletException;
@@ -45,6 +45,6 @@ public final class NewCommentForPointServlet extends PostMethodServlet {
                         .set("updatedAt", new Date()));
 
         // Return success with the created comment id.
-        return new JSONResponse(0, new ObjectIdResponse(comment.getId()));
+        return new JSONResponse(0, new ObjectIdEntity(comment.getId()));
     }
 }

@@ -1,4 +1,4 @@
-package com.pathlopedia.servlet.entity;
+package com.pathlopedia.servlet.response;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize;

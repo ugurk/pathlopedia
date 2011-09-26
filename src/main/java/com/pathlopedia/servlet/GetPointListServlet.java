@@ -4,9 +4,9 @@ import com.google.code.morphia.Datastore;
 import com.pathlopedia.ds.DatastorePortal;
 import com.pathlopedia.ds.entity.Coordinate;
 import com.pathlopedia.ds.entity.Point;
-import com.pathlopedia.servlet.entity.JSONResponse;
-import com.pathlopedia.servlet.entity.GetPointsResponse;
-import com.pathlopedia.servlet.entity.WritableResponse;
+import com.pathlopedia.servlet.response.JSONResponse;
+import com.pathlopedia.servlet.entity.PointListItemEntity;
+import com.pathlopedia.servlet.response.WritableResponse;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 
 import javax.servlet.ServletException;
@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class GetPointsServlet extends PostMethodServlet {
+public final class GetPointListServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin(req);
@@ -41,13 +41,13 @@ public final class GetPointsServlet extends PostMethodServlet {
                 .asList();
 
         // Pack and return the fetched points.
-        List<GetPointsResponse> responses =
-                new ArrayList<GetPointsResponse>(points.size());
+        List<PointListItemEntity> itemEntities =
+                new ArrayList<PointListItemEntity>(points.size());
         for (Point point : points)
-            responses.add(new GetPointsResponse(
+            itemEntities.add(new PointListItemEntity(
                     point.getId().toString(),
                     point.getLocation(),
                     point.getTitle()));
-        return new JSONResponse(0, responses);
+        return new JSONResponse(0, itemEntities);
     }
 }

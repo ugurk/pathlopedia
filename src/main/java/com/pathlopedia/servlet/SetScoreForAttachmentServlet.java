@@ -7,8 +7,8 @@ import com.pathlopedia.ds.DatastorePortal;
 import com.pathlopedia.ds.entity.Attachment;
 import com.pathlopedia.ds.entity.Parent;
 import com.pathlopedia.ds.entity.User;
-import com.pathlopedia.servlet.entity.JSONResponse;
-import com.pathlopedia.servlet.entity.WritableResponse;
+import com.pathlopedia.servlet.response.JSONResponse;
+import com.pathlopedia.servlet.response.WritableResponse;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 
 import javax.servlet.ServletException;

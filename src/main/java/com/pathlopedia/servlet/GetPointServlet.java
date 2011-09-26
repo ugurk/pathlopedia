@@ -6,10 +6,10 @@ import com.pathlopedia.ds.entity.Attachment;
 import com.pathlopedia.ds.entity.Comment;
 import com.pathlopedia.ds.entity.Point;
 import com.pathlopedia.ds.entity.User;
-import com.pathlopedia.servlet.entity.CommentResponse;
-import com.pathlopedia.servlet.entity.JSONResponse;
-import com.pathlopedia.servlet.entity.GetPointResponse;
-import com.pathlopedia.servlet.entity.WritableResponse;
+import com.pathlopedia.servlet.entity.CommentEntity;
+import com.pathlopedia.servlet.response.JSONResponse;
+import com.pathlopedia.servlet.entity.PointEntity;
+import com.pathlopedia.servlet.response.WritableResponse;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 
 import javax.servlet.ServletException;
@@ -33,10 +33,10 @@ public final class GetPointServlet extends PostMethodServlet {
         Key<User> userKey = (Key<User>) req.getSession().getAttribute("userKey");
 
         // Fetch comments.
-        List<CommentResponse> comments =
-                new ArrayList<CommentResponse>();
+        List<CommentEntity> comments =
+                new ArrayList<CommentEntity>();
         for (Comment comment : point.getComments())
-            comments.add(new CommentResponse(
+            comments.add(new CommentEntity(
                     comment.getId().toString(),
                     comment.getUser().getId().toString(),
                     comment.getUser().getName(),
@@ -46,17 +46,17 @@ public final class GetPointServlet extends PostMethodServlet {
                     comment.getUpdatedAt()));
 
         // Fetch attachments.
-        List<GetPointResponse.AttachmentResponse> attachments =
-                new ArrayList<GetPointResponse.AttachmentResponse>();
+        List<PointEntity.AttachmentResponse> attachments =
+                new ArrayList<PointEntity.AttachmentResponse>();
         for (Attachment attachment : point.getAttachments())
-            attachments.add(new GetPointResponse.AttachmentResponse(
+            attachments.add(new PointEntity.AttachmentResponse(
                     attachment.getId().toString(),
                     attachment.getText(),
                     attachment.getType(),
                     attachment.getImage()));
 
         // Pack and return the result.
-        return new JSONResponse(0, new GetPointResponse(
+        return new JSONResponse(0, new PointEntity(
                 point.getId().toString(),
                 point.getLocation(),
                 point.getUser().getId().toString(),

@@ -2,7 +2,7 @@ package com.pathlopedia.servlet.entity;
 
 import java.util.Date;
 
-public final class CommentResponse {
+public final class CommentEntity {
     public final String id;
     public final String userId;
     public final String userName;
@@ -11,7 +11,7 @@ public final class CommentResponse {
     public final boolean isScored;
     public final Date createdAt;
 
-    public CommentResponse(
+    public CommentEntity(
             String id,
             String userId,
             String userName,

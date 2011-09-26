@@ -3,8 +3,8 @@ package com.pathlopedia.servlet;
 import com.pathlopedia.ds.DatastorePortal;
 import com.pathlopedia.ds.entity.Attachment;
 import com.pathlopedia.ds.entity.ImageData;
-import com.pathlopedia.servlet.entity.JPEGResponse;
-import com.pathlopedia.servlet.entity.WritableResponse;
+import com.pathlopedia.servlet.response.JPEGResponse;
+import com.pathlopedia.servlet.response.WritableResponse;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 
 import javax.servlet.ServletException;

@@ -3,9 +3,9 @@ package com.pathlopedia.servlet;
 import com.google.code.morphia.Datastore;
 import com.pathlopedia.ds.DatastorePortal;
 import com.pathlopedia.ds.entity.*;
-import com.pathlopedia.servlet.entity.JSONResponse;
-import com.pathlopedia.servlet.entity.ObjectIdResponse;
-import com.pathlopedia.servlet.entity.WritableResponse;
+import com.pathlopedia.servlet.response.JSONResponse;
+import com.pathlopedia.servlet.entity.ObjectIdEntity;
+import com.pathlopedia.servlet.response.WritableResponse;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -66,7 +66,7 @@ public final class NewAttachmentForImageServlet extends PostMethodServlet {
                 ds.createUpdateOperations(Point.class)
                         .add("attachments", attachment)
                         .set("updatedAt", new Date()));
-        return new JSONResponse(0, new ObjectIdResponse(attachment.getId()));
+        return new JSONResponse(0, new ObjectIdEntity(attachment.getId()));
     }
 
     private Map<String,FileItem> parseMultipartContent(HttpServletRequest req)

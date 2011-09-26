@@ -2,9 +2,9 @@ package com.pathlopedia.servlet;
 
 import com.pathlopedia.ds.DatastorePortal;
 import com.pathlopedia.ds.entity.*;
-import com.pathlopedia.servlet.entity.JSONResponse;
-import com.pathlopedia.servlet.entity.ObjectIdResponse;
-import com.pathlopedia.servlet.entity.WritableResponse;
+import com.pathlopedia.servlet.response.JSONResponse;
+import com.pathlopedia.servlet.entity.ObjectIdEntity;
+import com.pathlopedia.servlet.response.WritableResponse;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 
 import javax.servlet.ServletException;
@@ -34,6 +34,6 @@ public final class NewPointServlet extends PostMethodServlet {
         DatastorePortal.safeSave(p);
 
         // Pack and return the result.
-        return new JSONResponse(0, new ObjectIdResponse(p.getId()));
+        return new JSONResponse(0, new ObjectIdEntity(p.getId()));
     }
 }

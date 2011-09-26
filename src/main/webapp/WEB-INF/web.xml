@@ -25,6 +25,16 @@
         <url-pattern>/f/get/attachment</url-pattern>
     </servlet-mapping>
 
+    <!-- /f/get/point/list -->
+    <servlet>
+        <servlet-name>GetPointListServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.GetPointListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetPointListServlet</servlet-name>
+        <url-pattern>/f/get/point/list</url-pattern>
+    </servlet-mapping>
+
     <!-- /f/get/point -->
     <servlet>
         <servlet-name>GetPointServlet</servlet-name>
@@ -33,16 +43,6 @@
     <servlet-mapping>
         <servlet-name>GetPointServlet</servlet-name>
         <url-pattern>/f/get/point</url-pattern>
-    </servlet-mapping>
-
-    <!-- /f/get/points -->
-    <servlet>
-        <servlet-name>GetPointsServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.GetPointsServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>GetPointsServlet</servlet-name>
-        <url-pattern>/f/get/points</url-pattern>
     </servlet-mapping>
 
     <!-- /f/new/attachment/image -->

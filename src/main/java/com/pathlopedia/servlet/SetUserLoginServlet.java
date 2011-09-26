@@ -4,9 +4,9 @@ import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Key;
 import com.pathlopedia.ds.DatastorePortal;
 import com.pathlopedia.ds.entity.User;
-import com.pathlopedia.servlet.entity.JSONResponse;
-import com.pathlopedia.servlet.entity.SetUserLoginResponse;
-import com.pathlopedia.servlet.entity.WritableResponse;
+import com.pathlopedia.servlet.response.JSONResponse;
+import com.pathlopedia.servlet.entity.UserLoginEntity;
+import com.pathlopedia.servlet.response.WritableResponse;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 
 import javax.servlet.ServletException;
@@ -37,7 +37,7 @@ public final class SetUserLoginServlet extends PostMethodServlet {
 
         // Pack and return the result.
         return new JSONResponse(0,
-                new SetUserLoginResponse(
+                new UserLoginEntity(
                         user.getId().toString(),
                         user.getName()));
     }
