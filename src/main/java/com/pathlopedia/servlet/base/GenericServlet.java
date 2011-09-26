@@ -1,10 +1,9 @@
-package com.pathlopedia.servlet.wrapper;
+package com.pathlopedia.servlet.base;
 
 import com.pathlopedia.servlet.entity.JSONResponse;
 import com.pathlopedia.servlet.entity.WritableResponse;
 import com.pathlopedia.util.Logger;
 
-import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.pathlopedia.servlet.wrapper;
+package com.pathlopedia.servlet.base;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
