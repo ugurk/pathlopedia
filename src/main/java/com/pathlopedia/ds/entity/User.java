@@ -16,7 +16,7 @@ public final class User {
     private Type type;
     private String name;
     private String email;
-    private Date createdAt;
+    private Date updatedAt;
 
     public enum Type { FACEBOOK, GOOGLE }
 
@@ -31,7 +31,7 @@ public final class User {
         this.type = type;
         this.name = name;
         this.email = email;
-        this.createdAt = new Date();
+        this.updatedAt = new Date();
         validate();
     }
 
@@ -41,7 +41,7 @@ public final class User {
         validateType();
         validateName();
         validateEmail();
-        validateCreatedAt();
+        validateUpdatedAt();
     }
 
     @PostLoad
@@ -93,13 +93,13 @@ public final class User {
         return email;
     }
 
-    private void validateCreatedAt() throws DatastoreException {
-        if (this.createdAt == null)
-            throw new DatastoreException("NULL 'createdAt' field!");
+    private void validateUpdatedAt() throws DatastoreException {
+        if (this.updatedAt == null)
+            throw new DatastoreException("NULL 'updatedAt' field!");
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
     public boolean equals(Object that) {

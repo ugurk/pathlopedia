@@ -9,7 +9,7 @@ import com.pathlopedia.servlet.entity.CommentResponse;
 import com.pathlopedia.servlet.entity.GetAttachmentResponse;
 import com.pathlopedia.servlet.entity.JSONResponse;
 import com.pathlopedia.servlet.entity.WritableResponse;
-import com.pathlopedia.servlet.wrapper.PostMethodServlet;
+import com.pathlopedia.servlet.base.PostMethodServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public final class GetAttachmentServlet extends PostMethodServlet {
                     comment.getText(),
                     comment.getScore(),
                     comment.getScorers().contains(userKey),
-                    comment.getCreatedAt()));
+                    comment.getUpdatedAt()));
 
         // Pack and return the result.
         return new JSONResponse(0, new GetAttachmentResponse(
@@ -49,7 +49,7 @@ public final class GetAttachmentServlet extends PostMethodServlet {
                 attachment.getText(),
                 attachment.getScore(),
                 attachment.getScorers().contains(userKey),
-                attachment.getCreatedAt(),
+                attachment.getUpdatedAt(),
                 comments,
                 attachment.getType()));
     }

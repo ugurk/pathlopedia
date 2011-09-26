@@ -9,11 +9,12 @@ import com.pathlopedia.ds.entity.User;
 import com.pathlopedia.servlet.entity.JSONResponse;
 import com.pathlopedia.servlet.entity.ObjectIdResponse;
 import com.pathlopedia.servlet.entity.WritableResponse;
-import com.pathlopedia.servlet.wrapper.PostMethodServlet;
+import com.pathlopedia.servlet.base.PostMethodServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * User: Volkan YAZICI <volkan.yazici@gmail.com>
@@ -40,7 +41,8 @@ public final class NewCommentForPointServlet extends PostMethodServlet {
         // Update the point.
         DatastorePortal.safeUpdate(point,
                 ds.createUpdateOperations(Point.class)
-                        .add("comments", comment));
+                        .add("comments", comment)
+                        .set("updatedAt", new Date()));
 
         // Return success with the created comment id.
         return new JSONResponse(0, new ObjectIdResponse(comment.getId()));

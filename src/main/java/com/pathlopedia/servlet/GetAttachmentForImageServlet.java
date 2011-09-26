@@ -5,7 +5,7 @@ import com.pathlopedia.ds.entity.Attachment;
 import com.pathlopedia.ds.entity.ImageData;
 import com.pathlopedia.servlet.entity.JPEGResponse;
 import com.pathlopedia.servlet.entity.WritableResponse;
-import com.pathlopedia.servlet.wrapper.PostMethodServlet;
+import com.pathlopedia.servlet.base.PostMethodServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +32,6 @@ public final class GetAttachmentForImageServlet extends PostMethodServlet {
         else return new JPEGResponse(HttpServletResponse.SC_NOT_FOUND);
 
         // Pack and return the result.
-        return new JPEGResponse(imageData.getBytes(), attachment.getCreatedAt());
+        return new JPEGResponse(imageData.getBytes(), attachment.getUpdatedAt());
     }
 }

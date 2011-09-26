@@ -163,4 +163,8 @@ public final class Point {
     public List<Attachment> getAttachments() {
         return this.attachments;
     }
+
+    public boolean equals(Object that) {
+        return (that instanceof Point && this.id.equals(((Point) that).id));
+    }
 }

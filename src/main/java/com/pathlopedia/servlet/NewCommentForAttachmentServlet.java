@@ -11,11 +11,12 @@ import com.pathlopedia.ds.entity.User;
 import com.pathlopedia.servlet.entity.JSONResponse;
 import com.pathlopedia.servlet.entity.ObjectIdResponse;
 import com.pathlopedia.servlet.entity.WritableResponse;
-import com.pathlopedia.servlet.wrapper.PostMethodServlet;
+import com.pathlopedia.servlet.base.PostMethodServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Date;
 
 public final class NewCommentForAttachmentServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
@@ -37,7 +38,8 @@ public final class NewCommentForAttachmentServlet extends PostMethodServlet {
         // Add created comment into the attachment.
         UpdateResults<Attachment> res = ds.update(attachment,
                 ds.createUpdateOperations(Attachment.class)
-                        .add("comments", commentKey));
+                        .add("comments", commentKey)
+                        .set("updatedAt", new Date()));
         if (res.getHadError())
             throw new ServletException(
                     "Couldn't update parent attachment ("+

@@ -10,7 +10,7 @@ import com.pathlopedia.servlet.entity.CommentResponse;
 import com.pathlopedia.servlet.entity.JSONResponse;
 import com.pathlopedia.servlet.entity.GetPointResponse;
 import com.pathlopedia.servlet.entity.WritableResponse;
-import com.pathlopedia.servlet.wrapper.PostMethodServlet;
+import com.pathlopedia.servlet.base.PostMethodServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +43,7 @@ public final class GetPointServlet extends PostMethodServlet {
                     comment.getText(),
                     comment.getScore(),
                     comment.getScorers().contains(userKey),
-                    comment.getCreatedAt()));
+                    comment.getUpdatedAt()));
 
         // Fetch attachments.
         List<GetPointResponse.AttachmentResponse> attachments =

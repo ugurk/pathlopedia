@@ -87,4 +87,8 @@ public final class ImageData {
     public byte[] getBytes() {
         return this.bytes;
     }
+
+    public boolean equals(Object that) {
+        return (that instanceof Point && this.id.equals(((ImageData) that).id));
+    }
 }

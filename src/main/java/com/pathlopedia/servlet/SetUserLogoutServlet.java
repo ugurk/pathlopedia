@@ -2,7 +2,7 @@ package com.pathlopedia.servlet;
 
 import com.pathlopedia.servlet.entity.JSONResponse;
 import com.pathlopedia.servlet.entity.WritableResponse;
-import com.pathlopedia.servlet.wrapper.GetMethodServlet;
+import com.pathlopedia.servlet.base.GetMethodServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

@@ -19,7 +19,7 @@ public final class Attachment {
     private String text;
     private int score;
     private List<Key<User>> scorers;
-    private Date createdAt;
+    private Date updatedAt;
     private Type type;
 
     @Embedded
@@ -39,7 +39,7 @@ public final class Attachment {
         this.text = text;
         this.score = 0;
         this.scorers = new ArrayList<Key<User>>();
-        this.createdAt = new Date();
+        this.updatedAt = new Date();
         this.type = Type.IMAGE;
         this.image = image;
         this.comments = new ArrayList<Comment>();
@@ -53,7 +53,7 @@ public final class Attachment {
         validateText();
         validateScore();
         validateScorers();
-        validateCreatedAt();
+        validateUpdatedAt();
         validateType();
         validateImage();
         validateComments();
@@ -88,11 +88,6 @@ public final class Attachment {
         return this.text;
     }
 
-    private void validateCreatedAt() throws DatastoreException {
-        if (this.createdAt == null)
-            throw new DatastoreException("NULL 'createdAt' field!");
-    }
-
     private void validateScore() throws DatastoreException {
         if (this.score < 0)
             throw new DatastoreException("Negative 'score' field!");
@@ -111,8 +106,13 @@ public final class Attachment {
         return this.scorers;
     }
 
-    public Date getCreatedAt() {
-        return this.createdAt;
+    private void validateUpdatedAt() throws DatastoreException {
+        if (this.updatedAt == null)
+            throw new DatastoreException("NULL 'updatedAt' field!");
+    }
+
+    public Date getUpdatedAt() {
+        return this.updatedAt;
     }
 
     private void validateType() throws DatastoreException {
@@ -142,5 +142,9 @@ public final class Attachment {
 
     public List<Comment> getComments() {
         return this.comments;
+    }
+
+    public boolean equals(Object that) {
+        return (that instanceof Attachment && this.id.equals(((Attachment) that).id));
     }
 }

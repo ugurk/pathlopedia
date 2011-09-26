@@ -24,7 +24,7 @@ public final class Comment {
     private String text;
     private int score;
     private List<Key<User>> scorers;
-    private Date createdAt;
+    private Date updatedAt;
 
     @SuppressWarnings("unused")
     private Comment() {}
@@ -36,7 +36,7 @@ public final class Comment {
         this.text = text;
         this.score = 0;
         this.scorers = new ArrayList<Key<User>>();
-        this.createdAt = new Date();
+        this.updatedAt = new Date();
         validate();
     }
 
@@ -48,7 +48,7 @@ public final class Comment {
         validateText();
         validateScore();
         validateScorers();
-        validateCreatedAt();
+        validateUpdatedAt();
     }
 
     @PostLoad
@@ -109,12 +109,16 @@ public final class Comment {
         return this.scorers;
     }
 
-    private void validateCreatedAt() throws DatastoreException {
-        if (this.createdAt == null)
-            throw new DatastoreException("NULL 'createdAt' field!");
+    private void validateUpdatedAt() throws DatastoreException {
+        if (this.updatedAt == null)
+            throw new DatastoreException("NULL 'updatedAt' field!");
     }
 
-    public Date getCreatedAt() {
-        return this.createdAt;
+    public Date getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public boolean equals(Object that) {
+        return (that instanceof Comment && this.id.equals(((Comment) that).id));
     }
 }

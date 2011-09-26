@@ -9,19 +9,13 @@ import com.pathlopedia.ds.entity.Parent;
 import com.pathlopedia.ds.entity.User;
 import com.pathlopedia.servlet.entity.JSONResponse;
 import com.pathlopedia.servlet.entity.WritableResponse;
-import com.pathlopedia.servlet.wrapper.PostMethodServlet;
-import org.bson.types.ObjectId;
+import com.pathlopedia.servlet.base.PostMethodServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.transform.sax.SAXTransformerFactory;
 import java.io.IOException;
+import java.util.Date;
 
-/**
- * User: Volkan YAZICI <volkan.yazici@gmail.com>
- * Date: 9/22/11
- * Time: 8:07 PM
- */
 public final class SetScoreForAttachmentServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
@@ -57,6 +51,9 @@ public final class SetScoreForAttachmentServlet extends PostMethodServlet {
         if (step == 1) ops = ops.inc("score");
         else if (step == -1) ops = ops.dec("score");
         else throw new ServletException("Invalid score step size: "+step);
+
+        // Update last modification time.
+        ops = ops.set("updatedAt", new Date());
 
         // Issue the update operation.
         DatastorePortal.safeUpdate(attachment, ops);
