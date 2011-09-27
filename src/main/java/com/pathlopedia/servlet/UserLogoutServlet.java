@@ -13,7 +13,7 @@ import java.io.IOException;
  * Date: 9/21/11
  * Time: 1:03 PM
  */
-public final class SetUserLogoutServlet extends GetMethodServlet {
+public final class UserLogoutServlet extends GetMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         req.getSession().invalidate();

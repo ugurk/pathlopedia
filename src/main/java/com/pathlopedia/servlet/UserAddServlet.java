@@ -17,7 +17,7 @@ import java.io.IOException;
  * Date: 9/21/11
  * Time: 11:11 AM
  */
-public final class NewUserServlet extends PostMethodServlet {
+public final class UserAddServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         // Create the user.

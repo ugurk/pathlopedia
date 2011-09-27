@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class GetPointListServlet extends PostMethodServlet {
+public final class PointListGetServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin(req);
@@ -30,8 +30,6 @@ public final class GetPointListServlet extends PostMethodServlet {
                 Double.parseDouble(req.getParameter("hilng")));
 
         // Fetch points.
-        // TODO: Access permission checks.
-        // TODO: Clustering.
         List<Point> points = ds.find(Point.class)
                 .field("location")
                 .within(lo.getLat(), lo.getLng(), hi.getLat(), hi.getLng())

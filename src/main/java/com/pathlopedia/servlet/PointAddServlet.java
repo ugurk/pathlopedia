@@ -16,7 +16,7 @@ import java.io.IOException;
  * Date: 9/21/11
  * Time: 4:58 PM
  */
-public final class NewPointServlet extends PostMethodServlet {
+public final class PointAddServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin(req);

@@ -21,7 +21,7 @@ import java.util.Date;
  * Date: 9/22/11
  * Time: 7:30 PM
  */
-public final class NewCommentForPointServlet extends PostMethodServlet {
+public final class PointCommentAddServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin(req);

@@ -12,13 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public final class GetAttachmentForImageServlet extends PostMethodServlet {
+public final class AttachmentImageGetServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin(req);
 
         // Fetch the attachment.
-        // TODO: Access permission checks.
         Attachment attachment = DatastorePortal.getDatastore().get(
                 Attachment.class, req.getParameter("attachment"));
         if (attachment == null || attachment.getType() != Attachment.Type.IMAGE)

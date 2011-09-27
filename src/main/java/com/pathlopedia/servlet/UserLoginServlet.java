@@ -19,10 +19,9 @@ import java.io.IOException;
  * Date: 9/21/11
  * Time: 11:40 AM
  */
-public final class SetUserLoginServlet extends PostMethodServlet {
+public final class UserLoginServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest httpReq)
             throws IOException, ServletException {
-        // TODO Requires querying!
         HttpSession ses = httpReq.getSession();
         Datastore ds = DatastorePortal.getDatastore();
 

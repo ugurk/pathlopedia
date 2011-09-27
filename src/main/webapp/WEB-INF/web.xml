@@ -5,144 +5,144 @@
 <web-app>
     <display-name>Pathlopedia</display-name>
 
-    <!-- /f/get/attachment/image -->
+    <!-- /f/attachment/comment/add -->
     <servlet>
-        <servlet-name>GetAttachmentForImageServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.GetAttachmentForImageServlet</servlet-class>
+        <servlet-name>AttachmentCommentAddServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.AttachmentCommentAddServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>GetAttachmentForImageServlet</servlet-name>
-        <url-pattern>/f/get/attachment/image</url-pattern>
+        <servlet-name>AttachmentCommentAddServlet</servlet-name>
+        <url-pattern>/f/attachment/comment/add</url-pattern>
     </servlet-mapping>
 
-    <!-- /f/get/attachment -->
+    <!-- /f/attachment/get -->
     <servlet>
+        <servlet-name>AttachmentGetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.AttachmentGetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
         <servlet-name>GetAttachmentServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.GetAttachmentServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>GetAttachmentServlet</servlet-name>
-        <url-pattern>/f/get/attachment</url-pattern>
+        <url-pattern>/f/attachment/get</url-pattern>
     </servlet-mapping>
 
-    <!-- /f/get/point/list -->
+    <!-- /f/attachment/image/add -->
     <servlet>
-        <servlet-name>GetPointListServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.GetPointListServlet</servlet-class>
+        <servlet-name>AttachmentImageAddServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.AttachmentImageAddServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>GetPointListServlet</servlet-name>
-        <url-pattern>/f/get/point/list</url-pattern>
+        <servlet-name>AttachmentImageAddServlet</servlet-name>
+        <url-pattern>/f/attachment/image/add</url-pattern>
     </servlet-mapping>
 
-    <!-- /f/get/point -->
+    <!-- /f/attachment/image/get -->
     <servlet>
-        <servlet-name>GetPointServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.GetPointServlet</servlet-class>
+        <servlet-name>AttachmentImageGetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.AttachmentImageGetServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>GetPointServlet</servlet-name>
-        <url-pattern>/f/get/point</url-pattern>
+        <servlet-name>AttachmentImageGetServlet</servlet-name>
+        <url-pattern>/f/attachment/image/get</url-pattern>
     </servlet-mapping>
 
-    <!-- /f/new/attachment/image -->
+    <!-- /f/attachment/score/set -->
     <servlet>
-        <servlet-name>NewAttachmentForImageServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.NewAttachmentForImageServlet</servlet-class>
+        <servlet-name>AttachmentScoreSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.AttachmentScoreSetServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>NewAttachmentForImageServlet</servlet-name>
-        <url-pattern>/f/new/attachment/image</url-pattern>
+        <servlet-name>AttachmentScoreSetServlet</servlet-name>
+        <url-pattern>/f/attachment/score/set</url-pattern>
     </servlet-mapping>
 
-    <!-- /f/new/comment/attachment -->
+    <!-- /f/comment/score/set -->
     <servlet>
-        <servlet-name>NewCommentForAttachmentServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.NewCommentForAttachmentServlet</servlet-class>
+        <servlet-name>CommentScoreSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.CommentScoreSetServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>NewCommentForAttachmentServlet</servlet-name>
-        <url-pattern>/f/new/comment/attachment</url-pattern>
+        <servlet-name>CommentScoreSetServlet</servlet-name>
+        <url-pattern>/f/comment/score/set</url-pattern>
     </servlet-mapping>
 
-    <!-- /f/new/comment/point -->
+    <!-- /f/point/add -->
     <servlet>
-        <servlet-name>NewCommentForPointServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.NewCommentForPointServlet</servlet-class>
+        <servlet-name>PointAddServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PointAddServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>NewCommentForPointServlet</servlet-name>
-        <url-pattern>/f/new/comment/point</url-pattern>
+        <servlet-name>PointAddServlet</servlet-name>
+        <url-pattern>/f/point/add</url-pattern>
     </servlet-mapping>
 
-    <!-- /f/new/point -->
+    <!-- /f/point/comment/add -->
     <servlet>
-        <servlet-name>NewPointServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.NewPointServlet</servlet-class>
+        <servlet-name>PointCommentAddServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PointCommentAddServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>NewPointServlet</servlet-name>
-        <url-pattern>/f/new/point</url-pattern>
+        <servlet-name>PointCommentAddServlet</servlet-name>
+        <url-pattern>/f/point/comment/add</url-pattern>
     </servlet-mapping>
 
-    <!-- /f/new/user -->
+    <!-- /f/point/get -->
     <servlet>
-        <servlet-name>NewUserServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.NewUserServlet</servlet-class>
+        <servlet-name>PointGetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PointGetServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>NewUserServlet</servlet-name>
-        <url-pattern>/f/new/user</url-pattern>
+        <servlet-name>PointGetServlet</servlet-name>
+        <url-pattern>/f/point/get</url-pattern>
     </servlet-mapping>
 
-    <!-- /f/set/score/attachment -->
+    <!-- /f/point/list/get -->
     <servlet>
-        <servlet-name>SetScoreForAttachmentServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.SetScoreForAttachmentServlet</servlet-class>
+        <servlet-name>PointListGetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PointListGetServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>SetScoreForAttachmentServlet</servlet-name>
-        <url-pattern>/f/set/score/attachment</url-pattern>
-    </servlet-mapping>
-
-    <!-- /f/set/score/comment -->
-    <servlet>
-        <servlet-name>SetScoreForCommentServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.SetScoreForCommentServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SetScoreForCommentServlet</servlet-name>
-        <url-pattern>/f/set/score/comment</url-pattern>
+        <servlet-name>PointListGetServlet</servlet-name>
+        <url-pattern>/f/point/list/get</url-pattern>
     </servlet-mapping>
 
     <!-- /f/set/score/point -->
     <servlet>
-        <servlet-name>SetScoreForPointServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.SetScoreForPointServlet</servlet-class>
+        <servlet-name>PointScoreSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PointScoreSetServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>SetScoreForPointServlet</servlet-name>
-        <url-pattern>/f/set/score/point</url-pattern>
+        <servlet-name>PointScoreSetServlet</servlet-name>
+        <url-pattern>/f/point/score/set</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/user/add -->
+    <servlet>
+        <servlet-name>UserAddServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.UserAddServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserAddServlet</servlet-name>
+        <url-pattern>/f/user/add</url-pattern>
     </servlet-mapping>
 
     <!-- /f/set/user/login -->
     <servlet>
-        <servlet-name>SetUserLoginServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.SetUserLoginServlet</servlet-class>
+        <servlet-name>UserLoginServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.UserLoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>SetUserLoginServlet</servlet-name>
-        <url-pattern>/f/set/user/login</url-pattern>
+        <servlet-name>UserLoginServlet</servlet-name>
+        <url-pattern>/f/user/login</url-pattern>
     </servlet-mapping>
 
     <!-- /f/set/user/logout -->
     <servlet>
-        <servlet-name>SetUserLogoutServlet</servlet-name>
-        <servlet-class>com.pathlopedia.servlet.SetUserLogoutServlet</servlet-class>
+        <servlet-name>UserLogoutServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.UserLogoutServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>SetUserLogoutServlet</servlet-name>
-        <url-pattern>/f/set/user/logout</url-pattern>
+        <servlet-name>UserLogoutServlet</servlet-name>
+        <url-pattern>/f/user/logout</url-pattern>
     </servlet-mapping>
 
     <!-- default -->
