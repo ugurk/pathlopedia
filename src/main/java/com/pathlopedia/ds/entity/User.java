@@ -8,7 +8,7 @@ import org.bson.types.ObjectId;
 import java.util.Date;
 
 @Entity("users")
-public final class User {
+public class User {
     @Id
     @SuppressWarnings("unused")
     private ObjectId id;
@@ -24,7 +24,7 @@ public final class User {
     public static final int MIN_NAME_LENGTH = 3;
 
     @SuppressWarnings("unused")
-    private User() {}
+    public User() {}
 
     public User(Type type, String name, String email)
             throws DatastoreException {

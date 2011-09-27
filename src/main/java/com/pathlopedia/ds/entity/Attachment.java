@@ -8,7 +8,7 @@ import org.bson.types.ObjectId;
 import java.util.*;
 
 @Entity("attachments")
-public final class Attachment {
+public class Attachment {
     @Id
     @SuppressWarnings("unused")
     private ObjectId id;
@@ -38,11 +38,9 @@ public final class Attachment {
         this.parent = parent;
         this.text = text;
         this.score = 0;
-        this.scorers = new ArrayList<Key<User>>();
         this.updatedAt = new Date();
         this.type = Type.IMAGE;
         this.image = image;
-        this.comments = new ArrayList<Comment>();
         validate();
     }
 
@@ -50,13 +48,10 @@ public final class Attachment {
     @PostLoad
     private void validate() throws DatastoreException {
         validateParent();
-        validateText();
         validateScore();
-        validateScorers();
         validateUpdatedAt();
         validateType();
         validateImage();
-        validateComments();
     }
 
     @PostLoad
@@ -79,11 +74,6 @@ public final class Attachment {
         return this.parent;
     }
 
-    private void validateText() throws DatastoreException {
-        if (this.text == null)
-            throw new DatastoreException("NULL 'text' field!");
-    }
-
     public String getText() {
         return this.text;
     }
@@ -95,11 +85,6 @@ public final class Attachment {
 
     public int getScore() {
         return this.score;
-    }
-
-    private void validateScorers() throws DatastoreException {
-        if (this.scorers == null)
-            throw new DatastoreException("NULL 'scorers' field!");
     }
 
     public List<Key<User>> getScorers() {
@@ -133,11 +118,6 @@ public final class Attachment {
         if (this.type != Type.IMAGE)
             throw new DatastoreException("Not of type image!");
         return this.image;
-    }
-
-    private void validateComments() throws DatastoreException {
-        if (this.comments == null)
-            throw new DatastoreException("NULL 'comments' field!");
     }
 
     public List<Comment> getComments() {

@@ -7,6 +7,7 @@ import com.google.code.morphia.query.UpdateOperations;
 import com.google.code.morphia.query.UpdateResults;
 import com.mongodb.Mongo;
 import com.pathlopedia.ds.entity.*;
+import org.bson.types.ObjectId;
 
 public final class DatastorePortal {
     private Datastore ds;
@@ -60,6 +61,9 @@ public final class DatastorePortal {
 
     public static <T> T safeGet(Class<T> clazz, Object id)
             throws DatastoreException {
+        initialize();
+        if (id instanceof String)
+            id = new ObjectId((String) id);
         T ent = conn.ds.get(clazz, id);
         if (ent == null)
             throw new DatastoreException("Couldn't find entity: "+id);

@@ -4,9 +4,7 @@ import com.google.code.morphia.annotations.*;
 import com.pathlopedia.ds.DatastoreException;
 
 @Embedded
-public final class Image {
-    // TODO: Image sizes should be reachable (i.e., embedded) within this class.
-
+public class Image {
     @Reference(lazy=true)
     private ImageData large;
 

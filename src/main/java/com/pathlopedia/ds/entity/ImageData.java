@@ -5,7 +5,7 @@ import com.pathlopedia.ds.DatastoreException;
 import org.bson.types.ObjectId;
 
 @Entity("imagedatas")
-public final class ImageData {
+public class ImageData {
     @Id
     @SuppressWarnings("unused")
     private ObjectId id;

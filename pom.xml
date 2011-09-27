@@ -32,8 +32,17 @@
             <name>Morphia MongoDB ORM Repository</name>
             <url>http://morphia.googlecode.com/svn/mavenrepo/</url>
         </repository>
+        <repository>
+            <id>codehaus-snapshots</id>
+            <url>http://snapshots.repository.codehaus.org</url>
+        </repository>
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.8.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>oro</groupId>
             <artifactId>oro</artifactId>
@@ -58,6 +67,16 @@
             <groupId>apache-validator</groupId>
             <artifactId>commons-validator</artifactId>
             <version>1.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.thoughtworks.proxytoys</groupId>
+            <artifactId>proxytoys</artifactId>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.morphia</groupId>
@@ -95,6 +114,11 @@
                 <configuration>
                     <scanIntervalSeconds>2</scanIntervalSeconds>
                     <contextPath>/</contextPath>
+                    <connectors>
+                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                            <port>8888</port>
+                        </connector>
+                    </connectors>
                 </configuration>
             </plugin>
         </plugins>

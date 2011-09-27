@@ -19,25 +19,22 @@ public final class GetPointListServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin(req);
+        Datastore ds = DatastorePortal.getDatastore();
 
         // Parse input arguments.
-        Coordinate begPoint = new Coordinate(
-                Double.parseDouble(req.getParameter("beglat")),
-                Double.parseDouble(req.getParameter("beglng")));
-        Coordinate endPoint = new Coordinate(
-                Double.parseDouble(req.getParameter("endlat")),
-                Double.parseDouble(req.getParameter("endlng")));
-        Datastore ds = DatastorePortal.getDatastore();
+        Coordinate lo = new Coordinate(
+                Double.parseDouble(req.getParameter("lolat")),
+                Double.parseDouble(req.getParameter("lolng")));
+        Coordinate hi = new Coordinate(
+                Double.parseDouble(req.getParameter("hilat")),
+                Double.parseDouble(req.getParameter("hilng")));
 
         // Fetch points.
         // TODO: Access permission checks.
         // TODO: Clustering.
         List<Point> points = ds.find(Point.class)
-                .filter("user", req.getSession().getAttribute("user"))
-                .field("location.lat").lessThan(begPoint.getLat())
-                .field("location.lng").lessThan(begPoint.getLng())
-                .field("location.lat").greaterThan(endPoint.getLat())
-                .field("location.lng").greaterThan(endPoint.getLng())
+                .field("location")
+                .within(lo.getLat(), lo.getLng(), hi.getLat(), hi.getLng())
                 .asList();
 
         // Pack and return the fetched points.

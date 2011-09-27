@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity("comments")
-public final class Comment {
+public class Comment {
     @Id
     @SuppressWarnings("unused")
     private ObjectId id;
@@ -35,7 +35,6 @@ public final class Comment {
         this.user = user;
         this.text = text;
         this.score = 0;
-        this.scorers = new ArrayList<Key<User>>();
         this.updatedAt = new Date();
         validate();
     }
@@ -47,7 +46,6 @@ public final class Comment {
         validateUser();
         validateText();
         validateScore();
-        validateScorers();
         validateUpdatedAt();
     }
 
@@ -98,11 +96,6 @@ public final class Comment {
 
     public int getScore() {
         return this.score;
-    }
-
-    private void validateScorers() throws DatastoreException {
-        if (this.scorers == null)
-            throw new DatastoreException("NULL 'scorers' field!");
     }
 
     public List<Key<User>> getScorers() {

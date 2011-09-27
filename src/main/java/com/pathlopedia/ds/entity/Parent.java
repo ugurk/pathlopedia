@@ -7,7 +7,7 @@ import com.pathlopedia.ds.DatastoreException;
 import org.bson.types.ObjectId;
 
 @Embedded
-public final class Parent {
+public class Parent {
     private ObjectId id;
     private Type type;
 

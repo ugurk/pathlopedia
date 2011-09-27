@@ -3,7 +3,7 @@ package com.pathlopedia.ds.entity;
 import com.google.code.morphia.annotations.Embedded;
 
 @Embedded
-public final class Coordinate {
+public class Coordinate {
     private double lat;
     private double lng;
 

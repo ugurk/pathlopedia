@@ -8,7 +8,7 @@ public final class CommentEntity {
     public final String userName;
     public final String text;
     public final int score;
-    public final boolean isScored;
+    public final boolean scored;
     public final Date createdAt;
 
     public CommentEntity(
@@ -24,7 +24,7 @@ public final class CommentEntity {
         this.userName = userName;
         this.text = text;
         this.score = score;
-        this.isScored = scored;
+        this.scored = scored;
         this.createdAt = createdAt;
     }
 }

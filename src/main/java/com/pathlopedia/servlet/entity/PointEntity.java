@@ -15,7 +15,7 @@ public final class PointEntity {
     public final String title;
     public final String text;
     public final int score;
-    public final boolean isScored;
+    public final boolean scored;
     public final Date updatedAt;
     public final List<CommentEntity> comments;
     public final List<AttachmentResponse> attachments;
@@ -57,7 +57,7 @@ public final class PointEntity {
         this.title = title;
         this.text = text;
         this.score = score;
-        this.isScored = scored;
+        this.scored = scored;
         this.updatedAt = updatedAt;
         this.comments = comments;
         this.attachments = attachments;

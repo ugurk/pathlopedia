@@ -2,18 +2,20 @@ package com.pathlopedia.ds.entity;
 
 import com.google.code.morphia.Key;
 import com.google.code.morphia.annotations.*;
+import com.google.code.morphia.utils.IndexDirection;
 import com.pathlopedia.ds.DatastoreException;
 import org.bson.types.ObjectId;
 
 import java.util.*;
 
 @Entity("points")
-public final class Point {
+public class Point {
     @Id
     @SuppressWarnings("unused")
     private ObjectId id;
 
     @Embedded
+    @Indexed(IndexDirection.GEO2D)
     private Coordinate location;
 
     @Reference(lazy=true)
@@ -47,10 +49,7 @@ public final class Point {
         this.title = title;
         this.text = text;
         this.score = 0;
-        this.scorers = new ArrayList<Key<User>>();
         this.updatedAt = new Date();
-        this.comments = new ArrayList<Comment>();
-        this.attachments = new ArrayList<Attachment>();
         validate();
     }
 
@@ -60,12 +59,8 @@ public final class Point {
         validateLocation();
         validateUser();
         validateTitle();
-        validateText();
         validateScore();
-        validateScorers();
         validateUpdatedAt();
-        validateComments();
-        validateAttachments();
     }
 
     @PostLoad
@@ -110,11 +105,6 @@ public final class Point {
         return this.title;
     }
 
-    private void validateText() throws DatastoreException {
-        if (this.text == null)
-            throw new DatastoreException("NULL 'text' field!");
-    }
-
     public String getText() {
         return this.text;
     }
@@ -126,11 +116,6 @@ public final class Point {
 
     public int getScore() {
         return this.score;
-    }
-
-    private void validateScorers() throws DatastoreException {
-        if (this.scorers == null)
-            throw new DatastoreException("NULL 'scorers' field!");
     }
 
     public List<Key<User>> getScorers() {
@@ -146,18 +131,8 @@ public final class Point {
         return this.updatedAt;
     }
 
-    private void validateComments() throws DatastoreException {
-        if (this.comments == null)
-            throw new DatastoreException("NULL 'comments' field!");
-    }
-
     public List<Comment> getComments() {
         return this.comments;
-    }
-
-    private void validateAttachments() throws DatastoreException {
-        if (this.attachments == null)
-            throw new DatastoreException("NULL 'attachments' field!");
     }
 
     public List<Attachment> getAttachments() {
