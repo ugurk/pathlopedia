@@ -23,6 +23,7 @@ public class Comment {
 
     private String text;
     private int score;
+    @SuppressWarnings("unused")
     private List<Key<User>> scorers;
     private Date updatedAt;
 
@@ -99,6 +100,8 @@ public class Comment {
     }
 
     public List<Key<User>> getScorers() {
+        if (this.scorers == null)
+            return new ArrayList<Key<User>>();
         return this.scorers;
     }
 

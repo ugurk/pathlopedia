@@ -24,13 +24,16 @@ public class Point {
     private String title;
     private String text;
     private int score;
+    @SuppressWarnings("unused")
     private List<Key<User>> scorers;
     private Date updatedAt;
 
     @Reference(lazy=true)
+    @SuppressWarnings("unused")
     private List<Comment> comments;
 
     @Reference(lazy=true)
+    @SuppressWarnings("unused")
     private List<Attachment> attachments;
 
     @Transient

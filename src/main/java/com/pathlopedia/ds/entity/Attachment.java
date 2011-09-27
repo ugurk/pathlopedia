@@ -18,6 +18,7 @@ public class Attachment {
 
     private String text;
     private int score;
+    @SuppressWarnings("unused")
     private List<Key<User>> scorers;
     private Date updatedAt;
     private Type type;
@@ -26,6 +27,7 @@ public class Attachment {
     private Image image;
 
     @Reference
+    @SuppressWarnings("unused")
     private List<Comment> comments;
 
     public enum Type { IMAGE }
@@ -88,6 +90,8 @@ public class Attachment {
     }
 
     public List<Key<User>> getScorers() {
+        if (this.scorers == null)
+            return new ArrayList<Key<User>>();
         return this.scorers;
     }
 
@@ -121,6 +125,8 @@ public class Attachment {
     }
 
     public List<Comment> getComments() {
+        if (this.comments == null)
+            return new ArrayList<Comment>();
         return this.comments;
     }
 
