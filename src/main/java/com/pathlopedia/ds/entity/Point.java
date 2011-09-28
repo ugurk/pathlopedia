@@ -26,6 +26,9 @@ public class Point {
     private int score;
     @SuppressWarnings("unused")
     private List<Key<User>> scorers;
+    @Reference(lazy=true)
+    @SuppressWarnings("unused")
+    private Path path;
     private Date updatedAt;
 
     @Reference(lazy=true)
@@ -123,6 +126,10 @@ public class Point {
 
     public List<Key<User>> getScorers() {
         return this.scorers;
+    }
+
+    public Path getPath() {
+        return path;
     }
 
     private void validateUpdatedAt() throws DatastoreException {

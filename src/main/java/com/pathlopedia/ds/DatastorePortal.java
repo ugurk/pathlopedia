@@ -3,11 +3,17 @@ package com.pathlopedia.ds;
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Key;
 import com.google.code.morphia.Morphia;
+import com.google.code.morphia.query.Query;
 import com.google.code.morphia.query.UpdateOperations;
 import com.google.code.morphia.query.UpdateResults;
+import com.mongodb.CommandResult;
 import com.mongodb.Mongo;
+import com.mongodb.WriteResult;
 import com.pathlopedia.ds.entity.*;
 import org.bson.types.ObjectId;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class DatastorePortal {
     private Datastore ds;
@@ -59,14 +65,60 @@ public final class DatastorePortal {
         return key;
     }
 
+    public static <T> Iterable<Key<T>> safeSave(Iterable<T> ents)
+            throws DatastoreException {
+        initialize();
+        Iterable<Key<T>> keys = conn.ds.save(ents);
+        if (keys == null)
+            throw new DatastoreException("Couldn't save entities: "+ents);
+        return keys;
+    }
+
     public static <T> T safeGet(Class<T> clazz, Object id)
             throws DatastoreException {
         initialize();
+        // Try to convert String's to ObjectId's
         if (id instanceof String)
             id = new ObjectId((String) id);
+
+        // Issue the query.
         T ent = conn.ds.get(clazz, id);
         if (ent == null)
             throw new DatastoreException("Couldn't find entity: "+id);
         return ent;
+    }
+
+    public static <T, V> Query<T> safeGet(Class<T> clazz, Iterable<V> ids)
+            throws DatastoreException {
+        initialize();
+        Query<T> query;
+        if (ids.iterator().hasNext() && ids.iterator().next() instanceof String) {
+            // Try to convert String's to ObjectId's
+            List<ObjectId> newIds = new ArrayList<ObjectId>();
+            for (Object id : ids)
+                newIds.add(new ObjectId((String) id));
+
+            // Issue the query using new ids.
+            query = conn.ds.get(clazz, newIds);
+        }
+        else
+        // Issue the query as is.
+            query = conn.ds.get(clazz, ids);
+
+        // Check and return the result.
+        if (query == null)
+            throw new DatastoreException("Couldn't find entitites: "+ids);
+        return query;
+    }
+
+    public static <T> WriteResult safeDelete(Query<T> q) throws DatastoreException {
+        initialize();
+        WriteResult writeRes = conn.ds.delete(q);
+        CommandResult commandRes = writeRes.getLastError();
+        if (!commandRes.ok())
+            throw new DatastoreException(
+                    "Delete failed: "+commandRes.getErrorMessage(),
+                    commandRes.getException());
+        return writeRes;
     }
 }

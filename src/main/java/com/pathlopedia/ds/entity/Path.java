@@ -9,43 +9,54 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity("comments")
-public class Comment {
+@Entity("paths")
+public class Path {
     @Id
     @SuppressWarnings("unused")
     private ObjectId id;
 
-    @Embedded
-    private Parent parent;
-
     @Reference(lazy=true)
-    private User user;
+    User user;
 
+    private String title;
     private String text;
     private int score;
     @SuppressWarnings("unused")
     private List<Key<User>> scorers;
     private Date updatedAt;
 
-    @SuppressWarnings("unused")
-    private Comment() {}
+    @Reference(lazy=true)
+    List<Corner> corners;
 
-    public Comment(Parent parent, User user, String text)
-            throws DatastoreException {
-        this.parent = parent;
+    @Reference(lazy=true)
+    List<Point> points;
+
+    @Reference(lazy=true)
+    List<Comment> comments;
+
+    @Transient
+    public final int MIN_TITLE_LENGTH = 1;
+
+    @Transient
+    public final int MAX_TITLE_LENGTH = 128;
+
+    @SuppressWarnings("unused")
+    private Path() {}
+
+    public Path(User user, String title, String text) throws DatastoreException {
         this.user = user;
+        this.title = title;
         this.text = text;
         this.score = 0;
         this.updatedAt = new Date();
         validate();
     }
 
-    @PrePersist
     @PostLoad
+    @PrePersist
     private void validate() throws DatastoreException {
-        validateParent();
         validateUser();
-        validateText();
+        validateTitle();
         validateScore();
         validateUpdatedAt();
     }
@@ -61,18 +72,6 @@ public class Comment {
         return this.id;
     }
 
-    private void validateParent() throws DatastoreException {
-        if (this.parent == null ||
-                (this.parent.getType() != Parent.Type.ATTACHMENT &&
-                 this.parent.getType() != Parent.Type.POINT))
-            throw new DatastoreException("Invalid parent: "+this.parent);
-    }
-
-    @SuppressWarnings("unused")
-    public Parent getParent() {
-        return this.parent;
-    }
-
     private void validateUser() throws DatastoreException {
         if (this.user == null)
             throw new DatastoreException("NULL 'user' field!");
@@ -82,9 +81,17 @@ public class Comment {
         return this.user;
     }
 
-    private void validateText() throws DatastoreException {
-        if (this.text == null || this.text.length() == 0)
-            throw new DatastoreException("NULL (or empty) 'text' field!");
+    private void validateTitle() throws DatastoreException {
+        if (this.title == null ||
+                this.title.length() < MIN_TITLE_LENGTH ||
+                this.title.length() > MAX_TITLE_LENGTH)
+            throw new DatastoreException(
+                    "'title' field ('"+this.title+"') must be between "+
+                    MIN_TITLE_LENGTH+" and "+MAX_TITLE_LENGTH+" characters.");
+    }
+
+    public String getTitle() {
+        return this.title;
     }
 
     public String getText() {
@@ -115,7 +122,25 @@ public class Comment {
         return this.updatedAt;
     }
 
+    public List<Corner> getCorners() {
+        if (this.corners == null)
+            return new ArrayList<Corner>();
+        return this.corners;
+    }
+
+    public List<Point> getPoints() {
+        if (this.points == null)
+            return new ArrayList<Point>();
+        return this.points;
+    }
+
+    public List<Comment> getComments() {
+        if (this.comments == null)
+            return new ArrayList<Comment>();
+        return this.comments;
+    }
+
     public boolean equals(Object that) {
-        return (that instanceof Comment && this.id.equals(((Comment) that).id));
+        return (that instanceof Path && this.id.equals(((Path) that).id));
     }
 }

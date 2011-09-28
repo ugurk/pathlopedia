@@ -2,11 +2,9 @@ package com.pathlopedia.servlet;
 
 import com.google.code.morphia.Key;
 import com.pathlopedia.ds.DatastorePortal;
-import com.pathlopedia.ds.entity.Attachment;
-import com.pathlopedia.ds.entity.Comment;
-import com.pathlopedia.ds.entity.Point;
-import com.pathlopedia.ds.entity.User;
+import com.pathlopedia.ds.entity.*;
 import com.pathlopedia.servlet.entity.CommentEntity;
+import com.pathlopedia.servlet.entity.PathReferenceEntity;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.entity.PointEntity;
 import com.pathlopedia.servlet.response.WritableResponse;
@@ -54,6 +52,14 @@ public final class PointGetServlet extends PostMethodServlet {
                     attachment.getType(),
                     attachment.getImage()));
 
+        // Create a path list item.
+        Path path = point.getPath();
+        PathReferenceEntity pathEntity = null;
+        if (path != null)
+             pathEntity = new PathReferenceEntity(
+                     path.getId().toString(),
+                     path.getTitle());
+
         // Pack and return the result.
         return new JSONResponse(0, new PointEntity(
                 point.getId().toString(),
@@ -65,6 +71,7 @@ public final class PointGetServlet extends PostMethodServlet {
                 point.getScore(),
                 point.getScorers().contains(userKey),
                 point.getUpdatedAt(),
+                pathEntity,
                 comments,
                 attachments));
     }

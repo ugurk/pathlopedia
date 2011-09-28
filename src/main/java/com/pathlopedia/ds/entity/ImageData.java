@@ -55,6 +55,7 @@ public class ImageData {
             throw new DatastoreException("Invalid parent: "+this.parent);
     }
 
+    @SuppressWarnings("unused")
     public Parent getParent() {
         return this.parent;
     }
@@ -89,6 +90,6 @@ public class ImageData {
     }
 
     public boolean equals(Object that) {
-        return (that instanceof Point && this.id.equals(((ImageData) that).id));
+        return (that instanceof ImageData && this.id.equals(((ImageData) that).id));
     }
 }
