@@ -65,6 +65,66 @@
         <url-pattern>/f/comment/score/set</url-pattern>
     </servlet-mapping>
 
+    <!-- /f/path/add -->
+    <servlet>
+        <servlet-name>PathAddServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PathAddServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PathAddServlet</servlet-name>
+        <url-pattern>/f/path/add</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/path/corner/set -->
+    <servlet>
+        <servlet-name>PathCornerSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PathCornerSetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PathCornerSetServlet</servlet-name>
+        <url-pattern>/f/path/corner/set</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/path/get -->
+    <servlet>
+        <servlet-name>PathGetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PathGetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PathGetServlet</servlet-name>
+        <url-pattern>/f/path/get</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/path/list/get -->
+    <servlet>
+        <servlet-name>PathListGetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PathListGetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PathListGetServlet</servlet-name>
+        <url-pattern>/f/path/list/get</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/path/point/add -->
+    <servlet>
+        <servlet-name>PathPointAddServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PathPointAddServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PathPointAddServlet</servlet-name>
+        <url-pattern>/f/path/point/add</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/path/score/set -->
+    <servlet>
+        <servlet-name>PathScoreSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PathScoreSetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PathScoreSetServlet</servlet-name>
+        <url-pattern>/f/path/score/set</url-pattern>
+    </servlet-mapping>
+
     <!-- /f/point/add -->
     <servlet>
         <servlet-name>PointAddServlet</servlet-name>
