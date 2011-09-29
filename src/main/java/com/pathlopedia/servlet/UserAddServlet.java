@@ -28,7 +28,11 @@ public final class UserAddServlet extends PostMethodServlet {
 
         // Check if there exists any user with this e-mail.
         Datastore ds = DatastorePortal.getDatastore();
-        if (ds.find(User.class).filter("email", user.getEmail()).get() != null)
+        User existingUser = ds.find(User.class)
+                .filter("visible", true)
+                .filter("email", user.getEmail())
+                .get();
+        if (existingUser != null)
             throw new ServletException("E-mail address is in use!");
 
         // Save the user.

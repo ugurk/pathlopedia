@@ -25,6 +25,10 @@ public final class PointScoreSetServlet extends PostMethodServlet {
         Point point = DatastorePortal.safeGet(
                 Point.class, req.getParameter("point"));
 
+        // Check point visibility.
+        if (!point.isVisible())
+            return new JSONResponse(1, "Inactive point!");
+
         // Check if user tries to vote for his/her own point.
         if (point.getUser().equals(req.getSession().getAttribute("user")))
             return new JSONResponse(1,

@@ -40,6 +40,10 @@ public final class AttachmentImageAddServlet extends PostMethodServlet {
         Point point = DatastorePortal.safeGet(
                 Point.class, fields.get("point").getString());
 
+        // Check point visibility.
+        if (!point.isVisible())
+            return new JSONResponse(1, "Inactive point!");
+
         // Create a parent object for this point.
         Parent parent = new Parent(point.getId(), Parent.Type.POINT);
 

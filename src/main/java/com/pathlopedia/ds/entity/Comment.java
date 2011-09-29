@@ -26,6 +26,7 @@ public class Comment {
     @SuppressWarnings("unused")
     private List<Key<User>> scorers;
     private Date updatedAt;
+    private boolean visible;
 
     @SuppressWarnings("unused")
     private Comment() {}
@@ -37,6 +38,7 @@ public class Comment {
         this.text = text;
         this.score = 0;
         this.updatedAt = new Date();
+        this.visible = true;
         validate();
     }
 
@@ -113,6 +115,10 @@ public class Comment {
 
     public Date getUpdatedAt() {
         return this.updatedAt;
+    }
+
+    public boolean isVisible() {
+        return this.visible;
     }
 
     public boolean equals(Object that) {

@@ -26,6 +26,10 @@ public final class AttachmentScoreSetServlet extends PostMethodServlet {
         Attachment attachment = DatastorePortal.safeGet(
                 Attachment.class, req.getParameter("attachment"));
 
+        // Check attachment visibility.
+        if (!attachment.isVisible())
+            return new JSONResponse(1, "Inactive attachment!");
+
         // Check if user tries to vote for his/her own entity.
         assert attachment.getParent().getType().equals(Parent.Type.POINT);
         String userId = (String) req.getSession().getAttribute("userId");

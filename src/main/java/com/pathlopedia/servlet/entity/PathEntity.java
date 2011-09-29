@@ -1,7 +1,5 @@
 package com.pathlopedia.servlet.entity;
 
-import com.pathlopedia.ds.entity.Coordinate;
-
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +12,6 @@ public final class PathEntity {
     public final int score;
     public final boolean scored;
     public final Date updatedAt;
-    public final List<PointListItemEntity> points;
     public final List<CommentEntity> comments;
 
     public PathEntity(
@@ -26,7 +23,6 @@ public final class PathEntity {
             int score,
             boolean scored,
             Date updatedAt,
-            List<PointListItemEntity> points,
             List<CommentEntity> comments) {
         this.id = id;
         this.userId = userId;
@@ -36,7 +32,6 @@ public final class PathEntity {
         this.score = score;
         this.scored = scored;
         this.updatedAt = updatedAt;
-        this.points = points;
         this.comments = comments;
     }
 }

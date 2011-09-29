@@ -25,6 +25,10 @@ public final class CommentScoreSetServlet extends PostMethodServlet {
         Comment comment = DatastorePortal.safeGet(
                 Comment.class, req.getParameter("comment"));
 
+        // Check comment visibility.
+        if (!comment.isVisible())
+            return new JSONResponse(1, "Inactive comment!");
+
         // Check if user tries to vote for his/her own comment.
         if (comment.getUser().equals(req.getSession().getAttribute("user")))
             return new JSONResponse(1,

@@ -17,6 +17,7 @@ public class User {
     private String name;
     private String email;
     private Date updatedAt;
+    private boolean visible;
 
     public enum Type { FACEBOOK, GOOGLE }
 
@@ -32,6 +33,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.updatedAt = new Date();
+        this.visible = true;
         validate();
     }
 
@@ -100,6 +102,10 @@ public class User {
 
     public Date getUpdatedAt() {
         return updatedAt;
+    }
+
+    public boolean isVisible() {
+        return this.visible;
     }
 
     public boolean equals(Object that) {

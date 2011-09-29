@@ -25,6 +25,10 @@ public final class PointGetServlet extends PostMethodServlet {
         Point point = DatastorePortal.safeGet(
                 Point.class, req.getParameter("point"));
 
+        // Check point visibility.
+        if (!point.isVisible())
+            return new JSONResponse(1, "Inactive point!");
+
         // Get user key.
         @SuppressWarnings("unchecked")
         Key<User> userKey = (Key<User>) req.getSession().getAttribute("userKey");
@@ -33,24 +37,26 @@ public final class PointGetServlet extends PostMethodServlet {
         List<CommentEntity> comments =
                 new ArrayList<CommentEntity>();
         for (Comment comment : point.getComments())
-            comments.add(new CommentEntity(
-                    comment.getId().toString(),
-                    comment.getUser().getId().toString(),
-                    comment.getUser().getName(),
-                    comment.getText(),
-                    comment.getScore(),
-                    comment.getScorers().contains(userKey),
-                    comment.getUpdatedAt()));
+            if (comment.isVisible())
+                comments.add(new CommentEntity(
+                        comment.getId().toString(),
+                        comment.getUser().getId().toString(),
+                        comment.getUser().getName(),
+                        comment.getText(),
+                        comment.getScore(),
+                        comment.getScorers().contains(userKey),
+                        comment.getUpdatedAt()));
 
         // Fetch attachments.
         List<PointEntity.AttachmentResponse> attachments =
                 new ArrayList<PointEntity.AttachmentResponse>();
         for (Attachment attachment : point.getAttachments())
-            attachments.add(new PointEntity.AttachmentResponse(
-                    attachment.getId().toString(),
-                    attachment.getText(),
-                    attachment.getType(),
-                    attachment.getImage()));
+            if (attachment.isVisible())
+                attachments.add(new PointEntity.AttachmentResponse(
+                        attachment.getId().toString(),
+                        attachment.getText(),
+                        attachment.getType(),
+                        attachment.getImage()));
 
         // Create a path list item.
         Path path = point.getPath();

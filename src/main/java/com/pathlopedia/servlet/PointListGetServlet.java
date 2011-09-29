@@ -31,6 +31,7 @@ public final class PointListGetServlet extends PostMethodServlet {
 
         // Fetch points.
         List<Point> points = ds.find(Point.class)
+                .filter("visible", true)
                 .field("location")
                 .within(lo.getLat(), lo.getLng(), hi.getLat(), hi.getLng())
                 .asList();

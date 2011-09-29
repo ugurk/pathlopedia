@@ -26,6 +26,10 @@ public final class AttachmentGetServlet extends PostMethodServlet {
         Attachment attachment = DatastorePortal.safeGet(
                 Attachment.class, req.getParameter("attachment"));
 
+        // Check attachment visibility.
+        if (!attachment.isVisible())
+            return new JSONResponse(1, "Inactive attachment!");
+
         // Get user key.
         @SuppressWarnings("unchecked")
         Key<User> userKey = (Key<User>) req.getSession().getAttribute("userKey");
@@ -33,14 +37,15 @@ public final class AttachmentGetServlet extends PostMethodServlet {
         // Fetch attachment comments and pack properly.
         List<CommentEntity> comments = new ArrayList<CommentEntity>();
         for (Comment comment : attachment.getComments())
-            comments.add(new CommentEntity(
-                    comment.getId().toString(),
-                    comment.getUser().getId().toString(),
-                    comment.getUser().getName(),
-                    comment.getText(),
-                    comment.getScore(),
-                    comment.getScorers().contains(userKey),
-                    comment.getUpdatedAt()));
+            if (comment.isVisible())
+                comments.add(new CommentEntity(
+                        comment.getId().toString(),
+                        comment.getUser().getId().toString(),
+                        comment.getUser().getName(),
+                        comment.getText(),
+                        comment.getScore(),
+                        comment.getScorers().contains(userKey),
+                        comment.getUpdatedAt()));
 
         // Pack and return the result.
         return new JSONResponse(0, new AttachmentEntity(

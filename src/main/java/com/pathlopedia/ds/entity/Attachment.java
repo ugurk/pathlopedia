@@ -21,6 +21,7 @@ public class Attachment {
     @SuppressWarnings("unused")
     private List<Key<User>> scorers;
     private Date updatedAt;
+    private boolean visible;
     private Type type;
 
     @Embedded
@@ -41,6 +42,7 @@ public class Attachment {
         this.text = text;
         this.score = 0;
         this.updatedAt = new Date();
+        this.visible = true;
         this.type = Type.IMAGE;
         this.image = image;
         validate();
@@ -102,6 +104,10 @@ public class Attachment {
 
     public Date getUpdatedAt() {
         return this.updatedAt;
+    }
+
+    public boolean isVisible() {
+        return this.visible;
     }
 
     private void validateType() throws DatastoreException {

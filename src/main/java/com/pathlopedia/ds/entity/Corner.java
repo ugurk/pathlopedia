@@ -11,6 +11,8 @@ public class Corner {
     @SuppressWarnings("unused")
     private ObjectId id;
 
+    private boolean visible;
+
     @Embedded
     @Indexed(IndexDirection.GEO2D)
     private Coordinate location;
@@ -23,6 +25,7 @@ public class Corner {
     public Corner() {}
 
     public Corner(Coordinate location, Path path) throws DatastoreException {
+        this.visible = true;
         this.location = location;
         this.path = path;
         validate();
@@ -44,6 +47,10 @@ public class Corner {
 
     public ObjectId getId() {
         return id;
+    }
+
+    public boolean isVisible() {
+        return this.visible;
     }
 
     private void validateLocation() throws DatastoreException {

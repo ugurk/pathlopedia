@@ -30,6 +30,7 @@ public class Point {
     @SuppressWarnings("unused")
     private Path path;
     private Date updatedAt;
+    private boolean visible;
 
     @Reference(lazy=true)
     @SuppressWarnings("unused")
@@ -56,6 +57,7 @@ public class Point {
         this.text = text;
         this.score = 0;
         this.updatedAt = new Date();
+        this.visible = true;
         validate();
     }
 
@@ -139,6 +141,10 @@ public class Point {
 
     public Date getUpdatedAt() {
         return this.updatedAt;
+    }
+
+    public boolean isVisible() {
+        return this.visible;
     }
 
     public List<Comment> getComments() {

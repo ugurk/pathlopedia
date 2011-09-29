@@ -6,9 +6,7 @@ import com.google.code.morphia.Morphia;
 import com.google.code.morphia.query.Query;
 import com.google.code.morphia.query.UpdateOperations;
 import com.google.code.morphia.query.UpdateResults;
-import com.mongodb.CommandResult;
 import com.mongodb.Mongo;
-import com.mongodb.WriteResult;
 import com.pathlopedia.ds.entity.*;
 import org.bson.types.ObjectId;
 
@@ -46,6 +44,17 @@ public final class DatastorePortal {
     public static Datastore getDatastore() throws DatastoreException {
         initialize();
         return conn.ds;
+    }
+
+    public static <T> UpdateResults<T> safeUpdate(
+            Query<T> q,
+            UpdateOperations<T> ops)
+            throws DatastoreException {
+        initialize();
+        UpdateResults<T> res = conn.ds.update(q, ops);
+        if (res.getHadError())
+            throw new DatastoreException(res.getError());
+        return res;
     }
 
     public static <T> UpdateResults<T> safeUpdate(T ent, UpdateOperations<T> ops)
@@ -109,16 +118,5 @@ public final class DatastorePortal {
         if (query == null)
             throw new DatastoreException("Couldn't find entitites: "+ids);
         return query;
-    }
-
-    public static <T> WriteResult safeDelete(Query<T> q) throws DatastoreException {
-        initialize();
-        WriteResult writeRes = conn.ds.delete(q);
-        CommandResult commandRes = writeRes.getLastError();
-        if (!commandRes.ok())
-            throw new DatastoreException(
-                    "Delete failed: "+commandRes.getErrorMessage(),
-                    commandRes.getException());
-        return writeRes;
     }
 }

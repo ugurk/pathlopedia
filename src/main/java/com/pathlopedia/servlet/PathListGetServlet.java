@@ -36,14 +36,18 @@ public final class PathListGetServlet extends PostMethodServlet {
 
         // Fetch corners intersecting with this bounding box.
         List<Corner> corners = ds.find(Corner.class)
+                .filter("visible", true)
                 .field("location")
                 .within(lo.getLat(), lo.getLng(), hi.getLat(), hi.getLng())
                 .asList();
 
         // Collect paths referenced by corners.
         Set<Path> paths = new HashSet<Path>();
-        for (Corner corner : corners)
-            paths.add(corner.getPath());
+        for (Corner corner : corners) {
+            Path path = corner.getPath();
+            if (path.isVisible())
+                paths.add(path);
+        }
 
         // Pack paths.
         List<PathListItemEntity> items = new ArrayList<PathListItemEntity>();
@@ -57,10 +61,11 @@ public final class PathListGetServlet extends PostMethodServlet {
             List<PointListItemEntity> pathPoints =
                     new ArrayList<PointListItemEntity>();
             for (Point point : path.getPoints())
-                pathPoints.add(new PointListItemEntity(
-                        point.getId().toString(),
-                        point.getLocation(),
-                        point.getTitle()));
+                if (point.isVisible())
+                    pathPoints.add(new PointListItemEntity(
+                            point.getId().toString(),
+                            point.getLocation(),
+                            point.getTitle()));
 
             // Pack this path.
             items.add(new PathListItemEntity(

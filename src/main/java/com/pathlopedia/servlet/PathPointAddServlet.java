@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Date;
 
-public class PathPointAddServlet extends PostMethodServlet {
+public final class PathPointAddServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin(req);
@@ -21,6 +21,10 @@ public class PathPointAddServlet extends PostMethodServlet {
         Path path = DatastorePortal.safeGet(
                 Path.class, req.getParameter("path"));
 
+        // Check path visibility.
+        if (!path.isVisible())
+            return new JSONResponse(1, "Inactive path!");
+
         // Validate the path user.
         if (!path.getUser().equals(req.getSession().getAttribute("user")))
             throw new ServletException("Access denied!");
@@ -28,6 +32,10 @@ public class PathPointAddServlet extends PostMethodServlet {
         // Fetch the point.
         Point point = DatastorePortal.safeGet(
                 Point.class, req.getParameter("point"));
+
+        // Check point visibility.
+        if (!point.isVisible())
+            return new JSONResponse(1, "Inactive point!");
 
         // Check if the point is already included.
         if (path.getPoints().contains(point))
@@ -38,14 +46,15 @@ public class PathPointAddServlet extends PostMethodServlet {
         DatastorePortal.safeUpdate(point,
                 DatastorePortal.getDatastore()
                         .createUpdateOperations(Point.class)
+                        .set("updatedAt", new Date())
                         .set("path", path));
 
         // Update the path.
         DatastorePortal.safeUpdate(path,
                 DatastorePortal.getDatastore()
                         .createUpdateOperations(Path.class)
-                        .add("points", point)
-                        .set("updatedAt", new Date()));
+                        .set("updatedAt", new Date())
+                        .add("points", point));
 
         // Return success.
         return new JSONResponse(0);

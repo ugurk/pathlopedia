@@ -1,5 +1,6 @@
 package com.pathlopedia.servlet;
 
+import com.google.code.morphia.Datastore;
 import com.pathlopedia.ds.DatastorePortal;
 import com.pathlopedia.ds.entity.Coordinate;
 import com.pathlopedia.ds.entity.Corner;
@@ -7,15 +8,15 @@ import com.pathlopedia.ds.entity.Path;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.response.WritableResponse;
-import org.bson.types.ObjectId;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class PathCornerSetServlet extends PostMethodServlet {
+public final class PathCornerSetServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin(req);
@@ -23,6 +24,10 @@ public class PathCornerSetServlet extends PostMethodServlet {
         // Fetch given path.
         Path path = DatastorePortal.safeGet(
                 Path.class, req.getParameter("path"));
+
+        // Check path visibility.
+        if (!path.isVisible())
+            return new JSONResponse(1, "Inactive path!");
 
         // Parse input corners.
         String[] coordPairs = req.getParameterValues("corners");
@@ -39,11 +44,11 @@ public class PathCornerSetServlet extends PostMethodServlet {
                     path));
         }
 
-        // Delete existing corners.
-        List<ObjectId> ids = new ArrayList<ObjectId>();
-        for (Corner corner : path.getCorners())
-            ids.add(corner.getId());
-        DatastorePortal.safeDelete(DatastorePortal.safeGet(Corner.class, ids));
+        // Deactivate existing corners.
+        Datastore ds = DatastorePortal.getDatastore();
+        DatastorePortal.safeUpdate(
+                ds.find(Corner.class).filter("path", path),
+                ds.createUpdateOperations(Corner.class).set("visible", false));
 
         // Save new corners.
         DatastorePortal.safeSave(corners);
@@ -52,8 +57,10 @@ public class PathCornerSetServlet extends PostMethodServlet {
         DatastorePortal.safeUpdate(path,
                 DatastorePortal.getDatastore()
                         .createUpdateOperations(Path.class)
+                        .set("updatedAt", new Date())
                         .set("corners", corners));
 
+        // Return success.
         return new JSONResponse(0);
     }
 }

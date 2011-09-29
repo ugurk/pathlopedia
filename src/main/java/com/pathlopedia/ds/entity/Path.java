@@ -16,7 +16,7 @@ public class Path {
     private ObjectId id;
 
     @Reference(lazy=true)
-    User user;
+    private User user;
 
     private String title;
     private String text;
@@ -24,15 +24,19 @@ public class Path {
     @SuppressWarnings("unused")
     private List<Key<User>> scorers;
     private Date updatedAt;
+    private boolean visible;
 
     @Reference(lazy=true)
-    List<Corner> corners;
+    @SuppressWarnings("unused")
+    private List<Corner> corners;
 
     @Reference(lazy=true)
-    List<Point> points;
+    @SuppressWarnings("unused")
+    private List<Point> points;
 
     @Reference(lazy=true)
-    List<Comment> comments;
+    @SuppressWarnings("unused")
+    private List<Comment> comments;
 
     @Transient
     public final int MIN_TITLE_LENGTH = 1;
@@ -49,6 +53,7 @@ public class Path {
         this.text = text;
         this.score = 0;
         this.updatedAt = new Date();
+        this.visible = true;
         validate();
     }
 
@@ -120,6 +125,10 @@ public class Path {
 
     public Date getUpdatedAt() {
         return this.updatedAt;
+    }
+
+    public boolean isVisible() {
+        return this.visible;
     }
 
     public List<Corner> getCorners() {

@@ -31,6 +31,10 @@ public final class PointCommentAddServlet extends PostMethodServlet {
         Point point = DatastorePortal.safeGet(
                 Point.class, req.getParameter("point"));
 
+        // Check point visibility.
+        if (!point.isVisible())
+            return new JSONResponse(1, "Inactive point!");
+
         // Create and save the comment.
         Comment comment = new Comment(
                 new Parent(point.getId(), Parent.Type.POINT),

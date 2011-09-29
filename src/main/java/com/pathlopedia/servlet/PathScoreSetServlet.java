@@ -24,6 +24,10 @@ public final class PathScoreSetServlet extends PostMethodServlet {
         Path path = DatastorePortal.safeGet(
                 Path.class, req.getParameter("path"));
 
+        // Check path visibility.
+        if (!path.isVisible())
+            return new JSONResponse(1, "Inactive path!");
+
         // Check if user tries to vote for his/her own path.
         if (path.getUser().equals(req.getSession().getAttribute("user")))
             return new JSONResponse(1,

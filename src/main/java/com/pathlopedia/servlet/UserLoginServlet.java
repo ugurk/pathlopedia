@@ -1,6 +1,5 @@
 package com.pathlopedia.servlet;
 
-import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Key;
 import com.pathlopedia.ds.DatastorePortal;
 import com.pathlopedia.ds.entity.User;
@@ -23,11 +22,14 @@ public final class UserLoginServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest httpReq)
             throws IOException, ServletException {
         HttpSession ses = httpReq.getSession();
-        Datastore ds = DatastorePortal.getDatastore();
 
         // Fetch user.
         User user = DatastorePortal.safeGet(
                 User.class, httpReq.getParameter("id"));
+
+        // Check user visibility.
+        if (!user.isVisible())
+            return new JSONResponse(1, "Inactive user!");
 
         // Set appropriate session variables.
         ses.setAttribute("user", user);

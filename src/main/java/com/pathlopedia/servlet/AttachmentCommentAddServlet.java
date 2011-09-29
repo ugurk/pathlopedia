@@ -2,7 +2,6 @@ package com.pathlopedia.servlet;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Key;
-import com.google.code.morphia.query.UpdateResults;
 import com.pathlopedia.ds.DatastorePortal;
 import com.pathlopedia.ds.entity.Attachment;
 import com.pathlopedia.ds.entity.Comment;
@@ -27,6 +26,10 @@ public final class AttachmentCommentAddServlet extends PostMethodServlet {
         // Locate the attachment.
         Attachment attachment = DatastorePortal.safeGet(
                 Attachment.class, req.getParameter("attachment"));
+
+        // Check attachment visibility.
+        if (!attachment.isVisible())
+            return new JSONResponse(1, "Inactive attachment!");
         
         // Create a new comment and save it.
         Comment comment = new Comment(
@@ -36,14 +39,10 @@ public final class AttachmentCommentAddServlet extends PostMethodServlet {
         Key<Comment> commentKey = ds.save(comment);
 
         // Add created comment into the attachment.
-        UpdateResults<Attachment> res = ds.update(attachment,
+        DatastorePortal.safeUpdate(attachment,
                 ds.createUpdateOperations(Attachment.class)
                         .add("comments", commentKey)
                         .set("updatedAt", new Date()));
-        if (res.getHadError())
-            throw new ServletException(
-                    "Couldn't update parent attachment ("+
-                    attachment.getId()+"): "+res.getError());
 
         // Return success with the comment id.
         return new JSONResponse(0, new ObjectIdEntity(comment.getId()));
