@@ -11,11 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-/**
- * User: Volkan YAZICI <volkan.yazici@gmail.com>
- * Date: 9/21/11
- * Time: 8:37 AM
- */
 abstract class GenericServlet extends HttpServlet {
     void wrap(HttpServletRequest req, HttpServletResponse res) {
         try {

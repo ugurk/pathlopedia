@@ -11,11 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-/**
- * User: Volkan YAZICI <volkan.yazici@gmail.com>
- * Date: 9/21/11
- * Time: 4:58 PM
- */
 public final class PointAddServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {

@@ -16,11 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Date;
 
-/**
- * User: Volkan YAZICI <volkan.yazici@gmail.com>
- * Date: 9/22/11
- * Time: 7:30 PM
- */
 public final class PointCommentAddServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
