@@ -11,31 +11,30 @@ public class Corner {
     @SuppressWarnings("unused")
     private ObjectId id;
 
+    @Embedded
+    private Parent parent;
+
     private boolean visible;
 
     @Embedded
     @Indexed(IndexDirection.GEO2D)
     private Coordinate location;
 
-    @Reference(lazy=true)
-    @SuppressWarnings("unused")
-    private Path path;
-
     @SuppressWarnings("unused")
     public Corner() {}
 
-    public Corner(Coordinate location, Path path) throws DatastoreException {
+    public Corner(Parent parent, Coordinate location) throws DatastoreException {
+        this.parent = parent;
         this.visible = true;
         this.location = location;
-        this.path = path;
         validate();
     }
 
     @PrePersist
     @PostLoad
     private void validate() throws DatastoreException {
+        validateParent();
         validateLocation();
-        validatePath();
     }
 
     @PostLoad
@@ -46,7 +45,16 @@ public class Corner {
     }
 
     public ObjectId getId() {
-        return id;
+        return this.id;
+    }
+
+    private void validateParent() throws DatastoreException {
+        if (this.parent == null || this.parent.getType() != Parent.Type.PATH)
+            throw new DatastoreException("Invalid parent: "+this.parent);
+    }
+
+    public Parent getParent() {
+        return this.parent;
     }
 
     public boolean isVisible() {
@@ -60,14 +68,5 @@ public class Corner {
 
     public Coordinate getLocation() {
         return location;
-    }
-
-    private void validatePath() throws DatastoreException {
-        if (this.path == null)
-            throw new DatastoreException("NULL 'path' field!");
-    }
-
-    public Path getPath() {
-        return path;
     }
 }

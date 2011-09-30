@@ -28,24 +28,22 @@ public final class AttachmentScoreSetServlet extends PostMethodServlet {
 
         // Check attachment visibility.
         if (!attachment.isVisible())
-            return new JSONResponse(1, "Inactive attachment!");
+            throw new ServletException("Inactive attachment!");
 
         // Check if user tries to vote for his/her own entity.
-        assert attachment.getParent().getType().equals(Parent.Type.POINT);
-        String userId = (String) req.getSession().getAttribute("userId");
-        User user = ds.get(User.class, attachment.getParent().getId());
-        assert user != null;
-        if (user.getId().toString().equals(userId))
-            return new JSONResponse(1,
+        if (attachment.getParent().getPoint().getUser()
+                .equals(req.getSession().getAttribute("user")))
+            throw new ServletException(
                     "You cannot vote for your own attachment!");
 
         // Get user key.
         @SuppressWarnings("unchecked")
-        Key<User> userKey = (Key<User>) req.getSession().getAttribute("userKey");
+        Key<User> userKey =
+                (Key<User>) req.getSession().getAttribute("userKey");
 
         // Check if user had previously scored.
         if (attachment.getScorers().contains(userKey))
-            return new JSONResponse(1,
+            throw new ServletException(
                     "You have already scored this attachment!");
 
         // Parse user input and create an appropriate update operation set.

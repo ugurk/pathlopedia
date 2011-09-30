@@ -27,20 +27,21 @@ public final class CommentScoreSetServlet extends PostMethodServlet {
 
         // Check comment visibility.
         if (!comment.isVisible())
-            return new JSONResponse(1, "Inactive comment!");
+            throw new ServletException("Inactive comment!");
 
         // Check if user tries to vote for his/her own comment.
         if (comment.getUser().equals(req.getSession().getAttribute("user")))
-            return new JSONResponse(1,
+            throw new ServletException(
                     "You cannot vote for your own comment!");
 
         // Get user key.
         @SuppressWarnings("unchecked")
-        Key<User> userKey = (Key<User>) req.getSession().getAttribute("user");
+        Key<User> userKey =
+                (Key<User>) req.getSession().getAttribute("userKey");
 
         // Check if user had previously scored.
         if (comment.getScorers().contains(userKey))
-            return new JSONResponse(1,
+            throw new ServletException(
                     "You have already scored this comment!");
 
         // Parse user input and create an appropriate update operation set.

@@ -23,13 +23,16 @@ public final class DatastorePortal {
         try {
             Morphia morphia = new Morphia();
             morphia
-                .map(Coordinate.class)
-                .map(User.class)
-                .map(ImageData.class)
-                .map(Image.class)
-                .map(Attachment.class)
-                .map(Comment.class)
-                .map(Point.class);
+                    .map(Parent.class)
+                    .map(Coordinate.class)
+                    .map(User.class)
+                    .map(ImageData.class)
+                    .map(Image.class)
+                    .map(Attachment.class)
+                    .map(Comment.class)
+                    .map(Point.class)
+                    .map(Corner.class)
+                    .map(Path.class);
             this.ds = morphia.createDatastore(new Mongo(), DATABASE_NAME);
         } catch (Exception e) {
             throw new DatastoreException("Data source connection failed!", e);

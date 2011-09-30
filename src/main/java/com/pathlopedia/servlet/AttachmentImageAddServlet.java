@@ -42,10 +42,7 @@ public final class AttachmentImageAddServlet extends PostMethodServlet {
 
         // Check point visibility.
         if (!point.isVisible())
-            return new JSONResponse(1, "Inactive point!");
-
-        // Create a parent object for this point.
-        Parent parent = new Parent(point.getId(), Parent.Type.POINT);
+            throw new ServletException("Inactive point!");
 
         // Check if we are the owner of this point.
         if (!point.getUser().equals(req.getSession().getAttribute("user")))
@@ -53,12 +50,12 @@ public final class AttachmentImageAddServlet extends PostMethodServlet {
 
         // Read delivered image and resize it to appropriate sizes.
         BufferedImage image = ImageIO.read(fields.get("image").getInputStream());
-        ImageData largeImage = resizeImage(parent, image, 600, 400);
-        ImageData smallImage = resizeImage(parent, image, 100, 100);
+        ImageData largeImage = resizeImage(image, 600, 400);
+        ImageData smallImage = resizeImage(image, 100, 100);
 
         // Create a new image attachment.
         Attachment attachment = new Attachment(
-                parent,
+                new Parent(point),
                 fields.get("text").getString(),
                 new Image(largeImage, smallImage));
 
@@ -98,7 +95,6 @@ public final class AttachmentImageAddServlet extends PostMethodServlet {
     }
 
     private ImageData resizeImage(
-            Parent parent,
             BufferedImage image,
             int maxWidth,
             int maxHeight)
@@ -122,7 +118,6 @@ public final class AttachmentImageAddServlet extends PostMethodServlet {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         ImageIO.write(image, "jpg", os);
         return new ImageData(
-                parent,
                 image.getWidth(),
                 image.getHeight(),
                 os.toByteArray());

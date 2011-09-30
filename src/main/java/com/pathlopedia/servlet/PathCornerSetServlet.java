@@ -4,6 +4,7 @@ import com.google.code.morphia.Datastore;
 import com.pathlopedia.ds.DatastorePortal;
 import com.pathlopedia.ds.entity.Coordinate;
 import com.pathlopedia.ds.entity.Corner;
+import com.pathlopedia.ds.entity.Parent;
 import com.pathlopedia.ds.entity.Path;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 import com.pathlopedia.servlet.response.JSONResponse;
@@ -27,27 +28,31 @@ public final class PathCornerSetServlet extends PostMethodServlet {
 
         // Check path visibility.
         if (!path.isVisible())
-            return new JSONResponse(1, "Inactive path!");
+            throw new ServletException("Inactive path!");
+
+        // Check if we are the owner of this path.
+        if (!path.getUser().equals(req.getSession().getAttribute("user")))
+            throw new ServletException("Access denied!");
 
         // Parse input corners.
         String[] coordPairs = req.getParameterValues("corners");
         List<Corner> corners = new ArrayList<Corner>();
+        Parent parent = new Parent(path);
         for (String coordPair : coordPairs) {
             String[] coord = coordPair.split(",");
             if (coord.length != 2)
                 throw new ServletException(
                         "Invalid coordinate pair: "+coordPair);
-            corners.add(new Corner(
+            corners.add(new Corner(parent,
                     new Coordinate(
                             Double.parseDouble(coord[0]),
-                            Double.parseDouble(coord[1])),
-                    path));
+                            Double.parseDouble(coord[1]))));
         }
 
         // Deactivate existing corners.
         Datastore ds = DatastorePortal.getDatastore();
         DatastorePortal.safeUpdate(
-                ds.find(Corner.class).filter("path", path),
+                ds.find(Corner.class).filter("parent.path", path),
                 ds.createUpdateOperations(Corner.class).set("visible", false));
 
         // Save new corners.

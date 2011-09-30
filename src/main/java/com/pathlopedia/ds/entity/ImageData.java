@@ -10,9 +10,6 @@ public class ImageData {
     @SuppressWarnings("unused")
     private ObjectId id;
 
-    @Embedded
-    private Parent parent;
-
     private int width;
     private int height;
     private byte[] bytes;
@@ -20,9 +17,8 @@ public class ImageData {
     @SuppressWarnings("unused")
     private ImageData() {}
 
-    public ImageData(Parent parent, int width, int height, byte[] bytes)
+    public ImageData(int width, int height, byte[] bytes)
             throws DatastoreException {
-        this.parent = parent;
         this.width = width;
         this.height = height;
         this.bytes = bytes;
@@ -32,7 +28,6 @@ public class ImageData {
     @PrePersist
     @PostLoad
     private void validate() throws DatastoreException {
-        validateParent();
         validateWidth();
         validateHeight();
         validateBytes();
@@ -47,17 +42,6 @@ public class ImageData {
 
     public ObjectId getId() {
         return this.id;
-    }
-
-    private void validateParent() throws DatastoreException {
-        if (this.parent == null ||
-                this.parent.getType() != Parent.Type.ATTACHMENT)
-            throw new DatastoreException("Invalid parent: "+this.parent);
-    }
-
-    @SuppressWarnings("unused")
-    public Parent getParent() {
-        return this.parent;
     }
 
     private void validateWidth() throws DatastoreException {

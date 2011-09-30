@@ -28,11 +28,11 @@ public final class PointCommentAddServlet extends PostMethodServlet {
 
         // Check point visibility.
         if (!point.isVisible())
-            return new JSONResponse(1, "Inactive point!");
+            throw new ServletException("Inactive point!");
 
         // Create and save the comment.
         Comment comment = new Comment(
-                new Parent(point.getId(), Parent.Type.POINT),
+                new Parent(point),
                 (User) req.getSession().getAttribute("user"),
                 req.getParameter("text"));
         DatastorePortal.safeSave(comment);

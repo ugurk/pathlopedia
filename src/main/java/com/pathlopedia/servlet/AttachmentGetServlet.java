@@ -28,7 +28,7 @@ public final class AttachmentGetServlet extends PostMethodServlet {
 
         // Check attachment visibility.
         if (!attachment.isVisible())
-            return new JSONResponse(1, "Inactive attachment!");
+            throw new ServletException("Inactive attachment!");
 
         // Get user key.
         @SuppressWarnings("unchecked")

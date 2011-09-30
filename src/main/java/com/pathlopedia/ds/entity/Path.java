@@ -21,21 +21,17 @@ public class Path {
     private String title;
     private String text;
     private int score;
-    @SuppressWarnings("unused")
     private List<Key<User>> scorers;
     private Date updatedAt;
     private boolean visible;
 
     @Reference(lazy=true)
-    @SuppressWarnings("unused")
     private List<Corner> corners;
 
     @Reference(lazy=true)
-    @SuppressWarnings("unused")
     private List<Point> points;
 
     @Reference(lazy=true)
-    @SuppressWarnings("unused")
     private List<Comment> comments;
 
     @Transient
@@ -52,8 +48,12 @@ public class Path {
         this.title = title;
         this.text = text;
         this.score = 0;
+        this.scorers = null;
         this.updatedAt = new Date();
         this.visible = true;
+        this.corners = null;
+        this.points = null;
+        this.comments = null;
         validate();
     }
 

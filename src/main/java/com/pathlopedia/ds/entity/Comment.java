@@ -23,7 +23,6 @@ public class Comment {
 
     private String text;
     private int score;
-    @SuppressWarnings("unused")
     private List<Key<User>> scorers;
     private Date updatedAt;
     private boolean visible;
@@ -37,6 +36,7 @@ public class Comment {
         this.user = user;
         this.text = text;
         this.score = 0;
+        this.scorers = null;
         this.updatedAt = new Date();
         this.visible = true;
         validate();
@@ -66,7 +66,8 @@ public class Comment {
     private void validateParent() throws DatastoreException {
         if (this.parent == null ||
                 (this.parent.getType() != Parent.Type.ATTACHMENT &&
-                 this.parent.getType() != Parent.Type.POINT))
+                 this.parent.getType() != Parent.Type.POINT &&
+                 this.parent.getType() != Parent.Type.PATH))
             throw new DatastoreException("Invalid parent: "+this.parent);
     }
 

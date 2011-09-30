@@ -54,7 +54,7 @@ public class User {
     }
 
     public ObjectId getId() {
-        return id;
+        return this.id;
     }
 
     private void validateType() throws DatastoreException {
@@ -70,7 +70,7 @@ public class User {
     }
 
     public Type getType() {
-        return type;
+        return this.type;
     }
 
     private void validateName() throws DatastoreException {
@@ -82,7 +82,7 @@ public class User {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     private void validateEmail() throws DatastoreException {
@@ -92,7 +92,7 @@ public class User {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     private void validateUpdatedAt() throws DatastoreException {
@@ -101,7 +101,7 @@ public class User {
     }
 
     public Date getUpdatedAt() {
-        return updatedAt;
+        return this.updatedAt;
     }
 
     public boolean isVisible() {

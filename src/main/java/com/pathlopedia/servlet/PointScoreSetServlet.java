@@ -36,7 +36,8 @@ public final class PointScoreSetServlet extends PostMethodServlet {
 
         // Get user key.
         @SuppressWarnings("unchecked")
-        Key<User> userKey = (Key<User>) req.getSession().getAttribute("user");
+        Key<User> userKey =
+                (Key<User>) req.getSession().getAttribute("userKey");
 
         // Check if user had previously voted.
         if (point.getScorers().contains(userKey))

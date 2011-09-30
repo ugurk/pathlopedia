@@ -26,16 +26,17 @@ public final class PathScoreSetServlet extends PostMethodServlet {
 
         // Check path visibility.
         if (!path.isVisible())
-            return new JSONResponse(1, "Inactive path!");
+            throw new ServletException("Inactive path!");
 
         // Check if user tries to vote for his/her own path.
         if (path.getUser().equals(req.getSession().getAttribute("user")))
-            return new JSONResponse(1,
+            throw new ServletException(
                     "You cannot vote for your own path!");
 
         // Get user key.
         @SuppressWarnings("unchecked")
-        Key<User> userKey = (Key<User>) req.getSession().getAttribute("user");
+        Key<User> userKey =
+                (Key<User>) req.getSession().getAttribute("userKey");
 
         // Check if user had previously scored.
         if (path.getScorers().contains(userKey))

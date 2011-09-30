@@ -15,6 +15,9 @@ public class Point {
     private ObjectId id;
 
     @Embedded
+    private Parent parent;
+
+    @Embedded
     @Indexed(IndexDirection.GEO2D)
     private Coordinate location;
 
@@ -24,20 +27,14 @@ public class Point {
     private String title;
     private String text;
     private int score;
-    @SuppressWarnings("unused")
     private List<Key<User>> scorers;
-    @Reference(lazy=true)
-    @SuppressWarnings("unused")
-    private Path path;
     private Date updatedAt;
     private boolean visible;
 
     @Reference(lazy=true)
-    @SuppressWarnings("unused")
     private List<Comment> comments;
 
     @Reference(lazy=true)
-    @SuppressWarnings("unused")
     private List<Attachment> attachments;
 
     @Transient
@@ -51,19 +48,24 @@ public class Point {
 
     public Point(Coordinate location, User user, String title, String text)
             throws DatastoreException {
+        this.parent = null;
         this.location = location;
         this.user = user;
         this.title = title;
         this.text = text;
         this.score = 0;
+        this.scorers = null;
         this.updatedAt = new Date();
         this.visible = true;
+        this.comments = null;
+        this.attachments = null;
         validate();
     }
 
     @PrePersist
     @PostLoad
     private void validate() throws DatastoreException {
+        validateParent();
         validateLocation();
         validateUser();
         validateTitle();
@@ -80,6 +82,15 @@ public class Point {
 
     public ObjectId getId() {
         return this.id;
+    }
+
+    private void validateParent() throws DatastoreException {
+        if (this.parent != null && this.parent.getType() != Parent.Type.PATH)
+            throw new DatastoreException("Invalid parent: "+this.parent);
+    }
+
+    public Parent getParent() {
+        return this.parent;
     }
 
     private void validateLocation() throws DatastoreException {
@@ -127,11 +138,9 @@ public class Point {
     }
 
     public List<Key<User>> getScorers() {
+        if (this.scorers == null)
+            return new ArrayList<Key<User>>();
         return this.scorers;
-    }
-
-    public Path getPath() {
-        return path;
     }
 
     private void validateUpdatedAt() throws DatastoreException {
@@ -148,10 +157,14 @@ public class Point {
     }
 
     public List<Comment> getComments() {
+        if (this.comments == null)
+            return new ArrayList<Comment>();
         return this.comments;
     }
 
     public List<Attachment> getAttachments() {
+        if (this.attachments == null)
+            return new ArrayList<Attachment>();
         return this.attachments;
     }
 

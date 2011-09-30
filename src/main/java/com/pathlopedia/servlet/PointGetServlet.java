@@ -27,11 +27,12 @@ public final class PointGetServlet extends PostMethodServlet {
 
         // Check point visibility.
         if (!point.isVisible())
-            return new JSONResponse(1, "Inactive point!");
+            throw new ServletException("Inactive point!");
 
         // Get user key.
         @SuppressWarnings("unchecked")
-        Key<User> userKey = (Key<User>) req.getSession().getAttribute("userKey");
+        Key<User> userKey =
+                (Key<User>) req.getSession().getAttribute("userKey");
 
         // Fetch comments.
         List<CommentEntity> comments =
@@ -59,7 +60,7 @@ public final class PointGetServlet extends PostMethodServlet {
                         attachment.getImage()));
 
         // Create a path list item.
-        Path path = point.getPath();
+        Path path = point.getParent().getPath();
         PathReferenceEntity pathEntity = null;
         if (path != null)
              pathEntity = new PathReferenceEntity(

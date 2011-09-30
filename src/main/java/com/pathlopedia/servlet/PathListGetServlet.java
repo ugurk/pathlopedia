@@ -44,7 +44,7 @@ public final class PathListGetServlet extends PostMethodServlet {
         // Collect paths referenced by corners.
         Set<Path> paths = new HashSet<Path>();
         for (Corner corner : corners) {
-            Path path = corner.getPath();
+            Path path = corner.getParent().getPath();
             if (path.isVisible())
                 paths.add(path);
         }

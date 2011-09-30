@@ -23,7 +23,7 @@ public final class PathPointAddServlet extends PostMethodServlet {
 
         // Check path visibility.
         if (!path.isVisible())
-            return new JSONResponse(1, "Inactive path!");
+            throw new ServletException("Inactive path!");
 
         // Validate the path user.
         if (!path.getUser().equals(req.getSession().getAttribute("user")))
@@ -35,11 +35,11 @@ public final class PathPointAddServlet extends PostMethodServlet {
 
         // Check point visibility.
         if (!point.isVisible())
-            return new JSONResponse(1, "Inactive point!");
+            throw new ServletException("Inactive point!");
 
         // Check if the point is already included.
         if (path.getPoints().contains(point))
-            return new JSONResponse(1,
+            throw new ServletException(
                     "Point is already included by the path!");
 
         // Update the point.

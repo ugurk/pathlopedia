@@ -18,7 +18,6 @@ public class Attachment {
 
     private String text;
     private int score;
-    @SuppressWarnings("unused")
     private List<Key<User>> scorers;
     private Date updatedAt;
     private boolean visible;
@@ -27,8 +26,7 @@ public class Attachment {
     @Embedded
     private Image image;
 
-    @Reference
-    @SuppressWarnings("unused")
+    @Reference(lazy=true)
     private List<Comment> comments;
 
     public enum Type { IMAGE }
@@ -41,10 +39,12 @@ public class Attachment {
         this.parent = parent;
         this.text = text;
         this.score = 0;
+        this.scorers = null;
         this.updatedAt = new Date();
         this.visible = true;
         this.type = Type.IMAGE;
         this.image = image;
+        this.comments = null;
         validate();
     }
 

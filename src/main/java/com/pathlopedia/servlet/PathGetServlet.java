@@ -6,6 +6,7 @@ import com.pathlopedia.ds.entity.*;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 import com.pathlopedia.servlet.entity.CommentEntity;
 import com.pathlopedia.servlet.entity.PathEntity;
+import com.pathlopedia.servlet.entity.PointListItemEntity;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.response.WritableResponse;
 
@@ -26,11 +27,26 @@ public final class PathGetServlet extends PostMethodServlet {
 
         // Check path visibility.
         if (!path.isVisible())
-            return new JSONResponse(1, "Inactive path!");
+            throw new ServletException("Inactive path!");
 
         // Get user key.
         @SuppressWarnings("unchecked")
         Key<User> userKey = (Key<User>) req.getSession().getAttribute("userKey");
+
+        // Collect corners.
+        List<Coordinate> corners = new ArrayList<Coordinate>();
+        for (Corner corner : path.getCorners())
+            if (corner.isVisible())
+                corners.add(corner.getLocation());
+
+        // Collect points.
+        List<PointListItemEntity> points = new ArrayList<PointListItemEntity>();
+        for (Point point : path.getPoints())
+            if (point.isVisible())
+                points.add(new PointListItemEntity(
+                        point.getId().toString(),
+                        point.getLocation(),
+                        point.getTitle()));
 
         // Collect comments.
         List<CommentEntity> comments = new ArrayList<CommentEntity>();
@@ -55,6 +71,8 @@ public final class PathGetServlet extends PostMethodServlet {
                 path.getScore(),
                 path.getScorers().contains(userKey),
                 path.getUpdatedAt(),
+                corners,
+                points,
                 comments));
     }
 

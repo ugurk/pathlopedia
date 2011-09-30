@@ -29,11 +29,11 @@ public final class AttachmentCommentAddServlet extends PostMethodServlet {
 
         // Check attachment visibility.
         if (!attachment.isVisible())
-            return new JSONResponse(1, "Inactive attachment!");
+            throw new ServletException("Inactive attachment!");
         
         // Create a new comment and save it.
         Comment comment = new Comment(
-                new Parent(attachment.getId(), Parent.Type.ATTACHMENT),
+                new Parent(attachment),
                 (User) req.getSession().getAttribute("user"),
                 req.getParameter("text"));
         Key<Comment> commentKey = ds.save(comment);
