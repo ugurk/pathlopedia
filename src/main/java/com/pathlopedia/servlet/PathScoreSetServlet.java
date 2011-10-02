@@ -33,6 +33,8 @@ public final class PathScoreSetServlet extends PostMethodServlet {
             throw new ServletException(
                     "You cannot vote for your own path!");
 
+        // TODO Check path accessibility.
+
         // Get user key.
         @SuppressWarnings("unchecked")
         Key<User> userKey =

@@ -27,6 +27,8 @@ public final class AttachmentImageGetServlet extends PostMethodServlet {
         if (!attachment.isVisible())
             return new JPEGResponse(HttpServletResponse.SC_NOT_FOUND);
 
+        // TODO Check attachment accessibility.
+
         // Parse requested image size.
         String size = req.getParameter("imageSize");
         ImageData imageData;

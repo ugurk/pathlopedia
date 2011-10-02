@@ -34,6 +34,8 @@ public final class CommentScoreSetServlet extends PostMethodServlet {
             throw new ServletException(
                     "You cannot vote for your own comment!");
 
+        // TODO Check comment accessibility.
+
         // Get user key.
         @SuppressWarnings("unchecked")
         Key<User> userKey =

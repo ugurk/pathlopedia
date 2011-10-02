@@ -34,6 +34,8 @@ public final class PointScoreSetServlet extends PostMethodServlet {
             return new JSONResponse(1,
                     "You cannot vote for your own point!");
 
+        // TODO Check point accessibility.
+
         // Get user key.
         @SuppressWarnings("unchecked")
         Key<User> userKey =

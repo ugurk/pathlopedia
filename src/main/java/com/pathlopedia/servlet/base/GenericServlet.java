@@ -18,6 +18,8 @@ abstract class GenericServlet extends HttpServlet {
         } catch (Exception error) {
             Logger.l.error("Couldn't process HTTP request!", error);
             try {
+                // TODO Some exceptions don't have messages, .e.g., NPE.
+                // We should somehow log their stack traces.
                 (new JSONResponse(1, error.getMessage())).write(res);
             } catch (Exception fatal) {
                 Logger.l.fatal("Couldn't inform client!", fatal);

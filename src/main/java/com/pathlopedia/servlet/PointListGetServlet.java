@@ -29,6 +29,8 @@ public final class PointListGetServlet extends PostMethodServlet {
                 Double.parseDouble(req.getParameter("hilat")),
                 Double.parseDouble(req.getParameter("hilng")));
 
+        // TODO Check point accessibilities.
+
         // Fetch points.
         List<Point> points = ds.find(Point.class)
                 .filter("visible", true)

@@ -46,10 +46,12 @@ public final class AttachmentImageAddServlet extends PostMethodServlet {
 
         // Check if we are the owner of this point.
         if (!point.getUser().equals(req.getSession().getAttribute("user")))
-            throw new ServletException("User doesn't have required privileges!");
+            throw new ServletException(
+                    "User doesn't have required privileges!");
 
         // Read delivered image and resize it to appropriate sizes.
-        BufferedImage image = ImageIO.read(fields.get("image").getInputStream());
+        BufferedImage image = ImageIO.read(
+                fields.get("image").getInputStream());
         ImageData largeImage = resizeImage(image, 600, 400);
         ImageData smallImage = resizeImage(image, 100, 100);
 

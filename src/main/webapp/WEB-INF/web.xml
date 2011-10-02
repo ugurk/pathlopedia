@@ -21,7 +21,7 @@
         <servlet-class>com.pathlopedia.servlet.AttachmentGetServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>GetAttachmentServlet</servlet-name>
+        <servlet-name>AttachmentGetServlet</servlet-name>
         <url-pattern>/f/attachment/get</url-pattern>
     </servlet-mapping>
 

@@ -30,6 +30,8 @@ public final class PointCommentAddServlet extends PostMethodServlet {
         if (!point.isVisible())
             throw new ServletException("Inactive point!");
 
+        // TODO Check point accessibility.
+
         // Create and save the comment.
         Comment comment = new Comment(
                 new Parent(point),

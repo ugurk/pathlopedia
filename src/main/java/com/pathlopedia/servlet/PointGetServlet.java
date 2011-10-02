@@ -29,6 +29,8 @@ public final class PointGetServlet extends PostMethodServlet {
         if (!point.isVisible())
             throw new ServletException("Inactive point!");
 
+        // TODO Check point accessibility.
+
         // Get user key.
         @SuppressWarnings("unchecked")
         Key<User> userKey =

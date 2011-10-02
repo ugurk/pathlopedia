@@ -30,9 +30,12 @@ public final class AttachmentGetServlet extends PostMethodServlet {
         if (!attachment.isVisible())
             throw new ServletException("Inactive attachment!");
 
+        // TODO Check attachment accessibility.
+
         // Get user key.
         @SuppressWarnings("unchecked")
-        Key<User> userKey = (Key<User>) req.getSession().getAttribute("userKey");
+        Key<User> userKey =
+                (Key<User>) req.getSession().getAttribute("userKey");
 
         // Fetch attachment comments and pack properly.
         List<CommentEntity> comments = new ArrayList<CommentEntity>();

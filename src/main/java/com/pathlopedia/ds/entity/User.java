@@ -64,6 +64,8 @@ public class User {
 
     public static Type parseType(String type)
             throws IllegalArgumentException {
+        if (type == null)
+            throw new IllegalArgumentException("NULL 'type' field!");
         if (type.equals("FACEBOOK")) return Type.FACEBOOK;
         else if (type.equals("GOOGLE")) return Type.GOOGLE;
         else throw new IllegalArgumentException("Invalid user type: "+type);

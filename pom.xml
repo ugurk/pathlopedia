@@ -9,18 +9,18 @@
     <url>http://maven.apache.org</url>
     <repositories>
         <repository>
-          <id>jboss-public-repository-group</id>
-          <name>JBoss Public Maven Repository Group</name>
-          <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-          <layout>default</layout>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </snapshots>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
         </repository>
         <repository>
             <id>thirdparty-releases</id>
@@ -38,6 +38,21 @@
         </repository>
     </repositories>
     <dependencies>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.4.3</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.7</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>2.9</version>
+        </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
@@ -104,8 +119,28 @@
             <version>6.1.26</version>
         </dependency>
     </dependencies>
+    <profiles>
+        <profile>
+            <id>production</id>
+            <properties>
+                <custom.http.port>80</custom.http.port>
+                <custom.db.name>pathlopedia</custom.db.name>
+            </properties>
+        </profile>
+        <profile>
+            <id>development</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <custom.http.port>8888</custom.http.port>
+                <custom.db.name>pathlopedia_test</custom.db.name>
+                <custom.http.root>http://localhost:${custom.http.port}</custom.http.root>
+            </properties>
+        </profile>
+    </profiles>
     <build>
-        <finalName>${artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
@@ -116,9 +151,26 @@
                     <contextPath>/</contextPath>
                     <connectors>
                         <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-                            <port>8888</port>
+                            <port>${custom.http.port}</port>
                         </connector>
                     </connectors>
+                    <systemProperties>
+                        <systemProperty>
+                            <name>custom.db.name</name>
+                            <value>${custom.db.name}</value>
+                        </systemProperty>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.4.3</version>
+                <configuration>
+                    <systemProperties>
+                        <custom.db.name>${custom.db.name}</custom.db.name>
+                        <custom.http.root>${custom.http.root}</custom.http.root>
+                    </systemProperties>
                 </configuration>
             </plugin>
         </plugins>

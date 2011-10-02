@@ -30,6 +30,8 @@ public final class AttachmentCommentAddServlet extends PostMethodServlet {
         // Check attachment visibility.
         if (!attachment.isVisible())
             throw new ServletException("Inactive attachment!");
+
+        // TODO Check attachment accessibility.
         
         // Create a new comment and save it.
         Comment comment = new Comment(

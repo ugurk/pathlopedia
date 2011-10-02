@@ -5,7 +5,6 @@ import com.google.code.morphia.Key;
 import com.google.code.morphia.query.UpdateOperations;
 import com.pathlopedia.ds.DatastorePortal;
 import com.pathlopedia.ds.entity.Attachment;
-import com.pathlopedia.ds.entity.Parent;
 import com.pathlopedia.ds.entity.User;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.response.WritableResponse;
@@ -35,6 +34,8 @@ public final class AttachmentScoreSetServlet extends PostMethodServlet {
                 .equals(req.getSession().getAttribute("user")))
             throw new ServletException(
                     "You cannot vote for your own attachment!");
+
+        // TODO Check attachment accessibility.
 
         // Get user key.
         @SuppressWarnings("unchecked")

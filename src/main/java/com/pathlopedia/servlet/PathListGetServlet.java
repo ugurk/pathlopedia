@@ -34,6 +34,8 @@ public final class PathListGetServlet extends PostMethodServlet {
                 Double.parseDouble(req.getParameter("hilat")),
                 Double.parseDouble(req.getParameter("hilng")));
 
+        // TODO Check path accessibilities.
+
         // Fetch corners intersecting with this bounding box.
         List<Corner> corners = ds.find(Corner.class)
                 .filter("visible", true)

@@ -17,8 +17,6 @@ public final class DatastorePortal {
     private Datastore ds;
     private static DatastorePortal conn = null;
 
-    public final static String DATABASE_NAME = "pathlopedia";
-
     public DatastorePortal() throws DatastoreException {
         try {
             Morphia morphia = new Morphia();
@@ -33,9 +31,14 @@ public final class DatastorePortal {
                     .map(Point.class)
                     .map(Corner.class)
                     .map(Path.class);
-            this.ds = morphia.createDatastore(new Mongo(), DATABASE_NAME);
+            String dbname = System.getProperty("custom.db.name");
+            if (dbname == null)
+                throw new DatastoreException(
+                        "custom.db.name property is missing!");
+            this.ds = morphia.createDatastore(new Mongo(), dbname);
         } catch (Exception e) {
-            throw new DatastoreException("Data source connection failed!", e);
+            throw new DatastoreException(
+                    "Data source connection failed: "+e.getMessage());
         }
     }
 

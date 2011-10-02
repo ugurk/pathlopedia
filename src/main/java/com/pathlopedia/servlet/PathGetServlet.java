@@ -29,6 +29,8 @@ public final class PathGetServlet extends PostMethodServlet {
         if (!path.isVisible())
             throw new ServletException("Inactive path!");
 
+        // TODO Check path accessibility.
+
         // Get user key.
         @SuppressWarnings("unchecked")
         Key<User> userKey = (Key<User>) req.getSession().getAttribute("userKey");
