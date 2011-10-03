@@ -1,6 +1,7 @@
 package com.pathlopedia.servlet;
 
 import com.pathlopedia.ds.DatastorePortal;
+import com.pathlopedia.ds.entity.Corner;
 import com.pathlopedia.ds.entity.Path;
 import com.pathlopedia.ds.entity.Point;
 import com.pathlopedia.ds.entity.User;
@@ -49,6 +50,17 @@ public final class PathPointAddServlet extends PostMethodServlet {
         if (path.getPoints().contains(point))
             throw new ServletException(
                     "Point is already included by the path!");
+
+        // Validate that the point is placed on a corner.
+        boolean isCorner = false;
+        for (Corner corner : path.getCorners())
+            if (corner.getLocation().equals(point.getLocation())) {
+                isCorner = true;
+                break;
+            }
+        if (!isCorner)
+            throw new ServletException(
+                    "Point doesn't overlap with a corner!");
 
         // Update the point.
         DatastorePortal.safeUpdate(point,
