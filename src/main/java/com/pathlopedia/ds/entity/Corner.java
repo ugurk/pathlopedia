@@ -1,8 +1,10 @@
 package com.pathlopedia.ds.entity;
 
 import com.google.code.morphia.annotations.*;
+import com.google.code.morphia.query.Query;
 import com.google.code.morphia.utils.IndexDirection;
 import com.pathlopedia.ds.DatastoreException;
+import com.pathlopedia.ds.DatastorePortal;
 import org.bson.types.ObjectId;
 
 @Entity("corners")
@@ -68,5 +70,14 @@ public class Corner {
 
     public Coordinate getLocation() {
         return location;
+    }
+
+    public static void deactivate(Query<Corner> query)
+            throws DatastoreException {
+        DatastorePortal.safeUpdate(
+                query.filter("visible", true),
+                DatastorePortal.getDatastore()
+                        .createUpdateOperations(Corner.class)
+                        .set("visible", false));
     }
 }

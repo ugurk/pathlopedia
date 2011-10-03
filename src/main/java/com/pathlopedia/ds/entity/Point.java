@@ -1,9 +1,11 @@
 package com.pathlopedia.ds.entity;
 
+import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Key;
 import com.google.code.morphia.annotations.*;
 import com.google.code.morphia.utils.IndexDirection;
 import com.pathlopedia.ds.DatastoreException;
+import com.pathlopedia.ds.DatastorePortal;
 import org.bson.types.ObjectId;
 
 import java.util.*;
@@ -170,5 +172,28 @@ public class Point {
 
     public boolean equals(Object that) {
         return (that instanceof Point && this.id.equals(((Point) that).id));
+    }
+
+    public void deactivate() throws DatastoreException {
+        // Check if deactivation is necessary.
+        if (!this.isVisible()) return;
+
+        // Get datastore handle.
+        Datastore ds = DatastorePortal.getDatastore();
+
+        // Deactivate point.
+        DatastorePortal.safeUpdate(this,
+                ds.createUpdateOperations(Point.class)
+                        .set("visible", false));
+
+        // Deactivate attachments.
+        Attachment.deactivate(
+                ds.find(Attachment.class)
+                        .filter("parent.point", this));
+
+        // Deactivate comments.
+        Comment.deactivate(
+                ds.find(Comment.class)
+                        .filter("parent.point", this));
     }
 }

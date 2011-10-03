@@ -2,7 +2,9 @@ package com.pathlopedia.ds.entity;
 
 import com.google.code.morphia.Key;
 import com.google.code.morphia.annotations.*;
+import com.google.code.morphia.query.Query;
 import com.pathlopedia.ds.DatastoreException;
+import com.pathlopedia.ds.DatastorePortal;
 import org.bson.types.ObjectId;
 
 import java.util.*;
@@ -137,6 +139,24 @@ public class Attachment {
     }
 
     public boolean equals(Object that) {
-        return (that instanceof Attachment && this.id.equals(((Attachment) that).id));
+        return (that instanceof Attachment &&
+                this.id.equals(((Attachment) that).id));
+    }
+
+    public void deactivate() throws DatastoreException {
+        if (this.isVisible())
+            DatastorePortal.safeUpdate(this,
+                    DatastorePortal.getDatastore()
+                            .createUpdateOperations(Attachment.class)
+                            .set("visible", false));
+    }
+
+    public static void deactivate(Query<Attachment> query)
+            throws DatastoreException {
+        DatastorePortal.safeUpdate(
+                query.filter("visible", true),
+                DatastorePortal.getDatastore()
+                        .createUpdateOperations(Attachment.class)
+                        .set("visible", false));
     }
 }
