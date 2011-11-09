@@ -15,6 +15,16 @@
         <url-pattern>/f/attachment/comment/add</url-pattern>
     </servlet-mapping>
 
+    <!-- /f/attachment/del -->
+    <servlet>
+        <servlet-name>AttachmentDelServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.AttachmentDelServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AttachmentDelServlet</servlet-name>
+        <url-pattern>/f/attachment/del</url-pattern>
+    </servlet-mapping>
+
     <!-- /f/attachment/get -->
     <servlet>
         <servlet-name>AttachmentGetServlet</servlet-name>
@@ -55,6 +65,26 @@
         <url-pattern>/f/attachment/score/set</url-pattern>
     </servlet-mapping>
 
+    <!-- /f/attachment/text/set -->
+    <servlet>
+        <servlet-name>AttachmentTextSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.AttachmentTextSetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AttachmentTextSetServlet</servlet-name>
+        <url-pattern>/f/attachment/text/set</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/comment/del -->
+    <servlet>
+        <servlet-name>CommentDelServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.CommentDelServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CommentDelServlet</servlet-name>
+        <url-pattern>/f/comment/del</url-pattern>
+    </servlet-mapping>
+
     <!-- /f/comment/score/set -->
     <servlet>
         <servlet-name>CommentScoreSetServlet</servlet-name>
@@ -63,6 +93,16 @@
     <servlet-mapping>
         <servlet-name>CommentScoreSetServlet</servlet-name>
         <url-pattern>/f/comment/score/set</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/comment/score/set -->
+    <servlet>
+        <servlet-name>CommentTextSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.CommentTextSetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CommentTextSetServlet</servlet-name>
+        <url-pattern>/f/comment/text/set</url-pattern>
     </servlet-mapping>
 
     <!-- /f/path/add -->
@@ -75,6 +115,16 @@
         <url-pattern>/f/path/add</url-pattern>
     </servlet-mapping>
 
+    <!-- /f/path/comment/add -->
+    <servlet>
+        <servlet-name>PathCommentAddServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PathCommentAddServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PathCommentAddServlet</servlet-name>
+        <url-pattern>/f/path/comment/add</url-pattern>
+    </servlet-mapping>
+
     <!-- /f/path/corner/set -->
     <servlet>
         <servlet-name>PathCornerSetServlet</servlet-name>
@@ -83,6 +133,16 @@
     <servlet-mapping>
         <servlet-name>PathCornerSetServlet</servlet-name>
         <url-pattern>/f/path/corner/set</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/path/del -->
+    <servlet>
+        <servlet-name>PathDelServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PathDelServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PathDelServlet</servlet-name>
+        <url-pattern>/f/path/del</url-pattern>
     </servlet-mapping>
 
     <!-- /f/path/get -->
@@ -125,6 +185,26 @@
         <url-pattern>/f/path/score/set</url-pattern>
     </servlet-mapping>
 
+    <!-- /f/path/text/set -->
+    <servlet>
+        <servlet-name>PathTextSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PathTextSetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PathTextSetServlet</servlet-name>
+        <url-pattern>/f/path/text/set</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/path/title/set -->
+    <servlet>
+        <servlet-name>PathTitleSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PathTitleSetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PathTitleSetServlet</servlet-name>
+        <url-pattern>/f/path/title/set</url-pattern>
+    </servlet-mapping>
+
     <!-- /f/point/add -->
     <servlet>
         <servlet-name>PointAddServlet</servlet-name>
@@ -143,6 +223,16 @@
     <servlet-mapping>
         <servlet-name>PointCommentAddServlet</servlet-name>
         <url-pattern>/f/point/comment/add</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/point/del -->
+    <servlet>
+        <servlet-name>PointDelServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PointDelServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PointDelServlet</servlet-name>
+        <url-pattern>/f/point/del</url-pattern>
     </servlet-mapping>
 
     <!-- /f/point/get -->
@@ -165,7 +255,17 @@
         <url-pattern>/f/point/list/get</url-pattern>
     </servlet-mapping>
 
-    <!-- /f/set/score/point -->
+    <!-- /f/point/location/set -->
+    <servlet>
+        <servlet-name>PointLocationSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PointLocationSetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PointLocationSetServlet</servlet-name>
+        <url-pattern>/f/point/location/set</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/point/score/set -->
     <servlet>
         <servlet-name>PointScoreSetServlet</servlet-name>
         <servlet-class>com.pathlopedia.servlet.PointScoreSetServlet</servlet-class>
@@ -173,6 +273,26 @@
     <servlet-mapping>
         <servlet-name>PointScoreSetServlet</servlet-name>
         <url-pattern>/f/point/score/set</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/point/text/set -->
+    <servlet>
+        <servlet-name>PointTextSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PointTextSetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PointTextSetServlet</servlet-name>
+        <url-pattern>/f/point/text/set</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/point/title/set -->
+    <servlet>
+        <servlet-name>PointTitleSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PointTitleSetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PointTitleSetServlet</servlet-name>
+        <url-pattern>/f/point/title/set</url-pattern>
     </servlet-mapping>
 
     <!-- /f/user/add -->
@@ -185,7 +305,7 @@
         <url-pattern>/f/user/add</url-pattern>
     </servlet-mapping>
 
-    <!-- /f/set/user/login -->
+    <!-- /f/user/login -->
     <servlet>
         <servlet-name>UserLoginServlet</servlet-name>
         <servlet-class>com.pathlopedia.servlet.UserLoginServlet</servlet-class>
@@ -195,7 +315,7 @@
         <url-pattern>/f/user/login</url-pattern>
     </servlet-mapping>
 
-    <!-- /f/set/user/logout -->
+    <!-- /f/user/logout -->
     <servlet>
         <servlet-name>UserLogoutServlet</servlet-name>
         <servlet-class>com.pathlopedia.servlet.UserLogoutServlet</servlet-class>
@@ -203,6 +323,16 @@
     <servlet-mapping>
         <servlet-name>UserLogoutServlet</servlet-name>
         <url-pattern>/f/user/logout</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/user/name/set -->
+    <servlet>
+        <servlet-name>UserNameSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.UserNameSetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserNameSetServlet</servlet-name>
+        <url-pattern>/f/user/name/set</url-pattern>
     </servlet-mapping>
 
     <!-- default -->
