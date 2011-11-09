@@ -1,6 +1,9 @@
 package com.pathlopedia.datastore.entity;
 
 import com.google.code.morphia.annotations.Embedded;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import java.io.IOException;
 
 @Embedded
 public class Coordinate {
@@ -21,5 +24,9 @@ public class Coordinate {
 
     public double getLng() {
         return lng;
+    }
+
+    public static Coordinate parse(String inp) throws IOException {
+        return (new ObjectMapper()).readValue(inp, Coordinate.class);
     }
 }

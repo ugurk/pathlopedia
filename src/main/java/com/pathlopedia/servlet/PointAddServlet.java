@@ -18,9 +18,7 @@ public final class PointAddServlet extends PostMethodServlet {
 
         // Create the point.
         Point p = new Point(
-                new Coordinate(
-                        Double.parseDouble(getTrimmedParameter("lat")),
-                        Double.parseDouble(getTrimmedParameter("lng"))),
+                Coordinate.parse(getTrimmedParameter("coordinate")),
                 (User) req.getSession().getAttribute("user"),
                 getTrimmedParameter("title"),
                 getTrimmedParameter("text"));

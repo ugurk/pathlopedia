@@ -30,9 +30,7 @@ public final class PointLocationSetServlet extends PostMethodServlet {
             throw new ServletException("Access denied!");
 
         // Construct the new location.
-        Coordinate coord = new Coordinate(
-                Double.parseDouble(getTrimmedParameter("lat")),
-                Double.parseDouble(getTrimmedParameter("lng")));
+        Coordinate coord = Coordinate.parse(getTrimmedParameter("coordinate"));
 
         // Update the point.
         DatastorePortal.safeUpdate(point,

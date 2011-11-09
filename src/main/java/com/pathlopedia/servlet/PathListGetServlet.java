@@ -27,12 +27,8 @@ public final class PathListGetServlet extends PostMethodServlet {
         Datastore ds = DatastorePortal.getDatastore();
 
         // Parse input arguments.
-        Coordinate lo = new Coordinate(
-                Double.parseDouble(getTrimmedParameter("lolat")),
-                Double.parseDouble(getTrimmedParameter("lolng")));
-        Coordinate hi = new Coordinate(
-                Double.parseDouble(getTrimmedParameter("hilat")),
-                Double.parseDouble(getTrimmedParameter("hilng")));
+        Coordinate lo = Coordinate.parse(getTrimmedParameter("lo"));
+        Coordinate hi = Coordinate.parse(getTrimmedParameter("hi"));
 
         // TODO Check path accessibilities.
 
