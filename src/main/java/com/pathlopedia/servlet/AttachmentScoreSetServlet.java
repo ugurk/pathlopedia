@@ -3,9 +3,9 @@ package com.pathlopedia.servlet;
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Key;
 import com.google.code.morphia.query.UpdateOperations;
-import com.pathlopedia.ds.DatastorePortal;
-import com.pathlopedia.ds.entity.Attachment;
-import com.pathlopedia.ds.entity.User;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.datastore.entity.Attachment;
+import com.pathlopedia.datastore.entity.User;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.response.WritableResponse;
 import com.pathlopedia.servlet.base.PostMethodServlet;
@@ -18,12 +18,12 @@ import java.util.Date;
 public final class AttachmentScoreSetServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
-        requireLogin(req);
+        requireLogin();
         Datastore ds = DatastorePortal.getDatastore();
 
         // Locate the given attachment.
         Attachment attachment = DatastorePortal.safeGet(
-                Attachment.class, req.getParameter("attachment"));
+                Attachment.class, getTrimmedParameter("attachment"));
 
         // Check attachment visibility.
         if (!attachment.isVisible())
@@ -48,7 +48,7 @@ public final class AttachmentScoreSetServlet extends PostMethodServlet {
                     "You have already scored this attachment!");
 
         // Parse user input and create an appropriate update operation set.
-        int step = Integer.parseInt(req.getParameter("step"));
+        int step = Integer.parseInt(getTrimmedParameter("step"));
         UpdateOperations<Attachment> ops = ds.createUpdateOperations(
                 Attachment.class).add("scorers", userKey);
         if (step == 1) ops = ops.inc("score");

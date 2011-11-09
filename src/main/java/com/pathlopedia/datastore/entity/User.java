@@ -1,9 +1,10 @@
-package com.pathlopedia.ds.entity;
+package com.pathlopedia.datastore.entity;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.annotations.*;
-import com.pathlopedia.ds.DatastoreException;
-import com.pathlopedia.ds.DatastorePortal;
+import com.pathlopedia.datastore.DatastoreException;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.util.Shortcuts;
 import org.apache.commons.validator.EmailValidator;
 import org.bson.types.ObjectId;
 
@@ -24,11 +25,8 @@ public class User {
 
     public enum Type { FACEBOOK, GOOGLE }
 
-    @Transient
-    public static final int MIN_NAME_LENGTH = 3;
-
     @SuppressWarnings("unused")
-    public User() {}
+    private User() {}
 
     public User(Type type, String name, String email)
             throws DatastoreException {
@@ -44,7 +42,7 @@ public class User {
     @PostLoad
     private void validate() throws DatastoreException {
         validateType();
-        validateName();
+        validateName(this.name);
         validateEmail();
         validateUpdatedAt();
     }
@@ -78,12 +76,12 @@ public class User {
         return this.type;
     }
 
-    private void validateName() throws DatastoreException {
-        if (this.name == null || this.name.length() <= MIN_NAME_LENGTH)
-            throw new DatastoreException(
-                    "Name field ('"+this.name+"') must "+
-                    "be equal to or greater than "+MIN_NAME_LENGTH+
-                    " characters!");
+    public static void validateName(String name) throws DatastoreException {
+        Shortcuts.validateStringLength(
+                "name", name,
+                DatastorePortal.NAME_MIN_LENGTH,
+                DatastorePortal.NAME_MAX_LENGTH,
+                false);
     }
 
     public String getName() {
@@ -91,9 +89,14 @@ public class User {
     }
 
     private void validateEmail() throws DatastoreException {
-        if (this.email == null || !EmailValidator.getInstance().isValid(this.email))
-            throw new DatastoreException(
-                    "Invalid e-mail address: "+this.email);
+        if (this.email == null) {
+            Shortcuts.validateStringLength(
+                    "email", this.email,
+                    DatastorePortal.MAIL_MAX_LENGTH, true);
+            if (!EmailValidator.getInstance().isValid(this.email))
+                throw new DatastoreException(
+                        "Invalid e-mail address: " + this.email);
+        }
     }
 
     public String getEmail() {

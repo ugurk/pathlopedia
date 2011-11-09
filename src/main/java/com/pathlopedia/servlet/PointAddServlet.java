@@ -1,7 +1,7 @@
 package com.pathlopedia.servlet;
 
-import com.pathlopedia.ds.DatastorePortal;
-import com.pathlopedia.ds.entity.*;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.datastore.entity.*;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.entity.ObjectIdEntity;
 import com.pathlopedia.servlet.response.WritableResponse;
@@ -14,16 +14,16 @@ import java.io.IOException;
 public final class PointAddServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
-        requireLogin(req);
+        requireLogin();
 
         // Create the point.
         Point p = new Point(
                 new Coordinate(
-                        Double.parseDouble(req.getParameter("lat")),
-                        Double.parseDouble(req.getParameter("lng"))),
+                        Double.parseDouble(getTrimmedParameter("lat")),
+                        Double.parseDouble(getTrimmedParameter("lng"))),
                 (User) req.getSession().getAttribute("user"),
-                req.getParameter("title"),
-                req.getParameter("text"));
+                getTrimmedParameter("title"),
+                getTrimmedParameter("text"));
 
         // Save the point.
         DatastorePortal.safeSave(p);

@@ -1,10 +1,10 @@
-package com.pathlopedia.ds.entity;
+package com.pathlopedia.datastore.entity;
 
 import com.google.code.morphia.annotations.*;
 import com.google.code.morphia.query.Query;
 import com.google.code.morphia.utils.IndexDirection;
-import com.pathlopedia.ds.DatastoreException;
-import com.pathlopedia.ds.DatastorePortal;
+import com.pathlopedia.datastore.DatastoreException;
+import com.pathlopedia.datastore.DatastorePortal;
 import org.bson.types.ObjectId;
 
 @Entity("corners")
@@ -23,7 +23,7 @@ public class Corner {
     private Coordinate location;
 
     @SuppressWarnings("unused")
-    public Corner() {}
+	private Corner() {}
 
     public Corner(Parent parent, Coordinate location) throws DatastoreException {
         this.parent = parent;

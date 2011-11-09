@@ -1,10 +1,7 @@
 package com.pathlopedia.servlet;
 
 import com.pathlopedia.datastore.DatastorePortal;
-import com.pathlopedia.datastore.entity.Comment;
-import com.pathlopedia.datastore.entity.Parent;
-import com.pathlopedia.datastore.entity.Point;
-import com.pathlopedia.datastore.entity.User;
+import com.pathlopedia.datastore.entity.*;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.entity.ObjectIdEntity;
 import com.pathlopedia.servlet.response.WritableResponse;
@@ -15,32 +12,32 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Date;
 
-public final class PointCommentAddServlet extends PostMethodServlet {
+public final class PathCommentAddServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin();
 
-        // Locate the point.
-        Point point = DatastorePortal.safeGet(
-                Point.class, getTrimmedParameter("point"));
+        // Locate the path.
+        Path path = DatastorePortal.safeGet(
+                Path.class, getTrimmedParameter("path"));
 
-        // Check point visibility.
-        if (!point.isVisible())
-            throw new ServletException("Inactive point!");
+        // Check path visibility.
+        if (!path.isVisible())
+            throw new ServletException("Inactive path!");
 
-        // TODO Check point accessibility.
+        // TODO Check path accessibility.
 
         // Create and save the comment.
         Comment comment = new Comment(
-                new Parent(point),
+                new Parent(path),
                 (User) req.getSession().getAttribute("user"),
                 getTrimmedParameter("text"));
         DatastorePortal.safeSave(comment);
 
         // Update the point.
-        DatastorePortal.safeUpdate(point,
+        DatastorePortal.safeUpdate(path,
                 DatastorePortal.getDatastore()
-                        .createUpdateOperations(Point.class)
+                        .createUpdateOperations(Path.class)
                         .add("comments", comment)
                         .set("updatedAt", new Date()));
 

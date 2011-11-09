@@ -1,16 +1,19 @@
-package com.pathlopedia.ds.entity;
+package com.pathlopedia.datastore.entity;
 
 import com.google.code.morphia.Key;
 import com.google.code.morphia.annotations.*;
 import com.google.code.morphia.query.Query;
-import com.pathlopedia.ds.DatastoreException;
-import com.pathlopedia.ds.DatastorePortal;
+import com.pathlopedia.datastore.DatastoreException;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.util.Shortcuts;
 import org.bson.types.ObjectId;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-@Entity("attachments")
-public class Attachment {
+@Entity("comments")
+public class Comment {
     @Id
     @SuppressWarnings("unused")
     private ObjectId id;
@@ -18,35 +21,27 @@ public class Attachment {
     @Embedded
     private Parent parent;
 
+    @Reference(lazy=true)
+    private User user;
+
     private String text;
     private int score;
     private List<Key<User>> scorers;
     private Date updatedAt;
     private boolean visible;
-    private Type type;
-
-    @Embedded
-    private Image image;
-
-    @Reference(lazy=true)
-    private List<Comment> comments;
-
-    public enum Type { IMAGE }
 
     @SuppressWarnings("unused")
-    private Attachment() {}
+    private Comment() {}
 
-    public Attachment(Parent parent, String text, Image image)
+    public Comment(Parent parent, User user, String text)
             throws DatastoreException {
         this.parent = parent;
+        this.user = user;
         this.text = text;
         this.score = 0;
         this.scorers = null;
         this.updatedAt = new Date();
         this.visible = true;
-        this.type = Type.IMAGE;
-        this.image = image;
-        this.comments = null;
         validate();
     }
 
@@ -54,10 +49,10 @@ public class Attachment {
     @PostLoad
     private void validate() throws DatastoreException {
         validateParent();
+        validateUser();
+        validateText(this.text);
         validateScore();
         validateUpdatedAt();
-        validateType();
-        validateImage();
     }
 
     @PostLoad
@@ -72,12 +67,29 @@ public class Attachment {
     }
 
     private void validateParent() throws DatastoreException {
-        if (this.parent == null || this.parent.getType() != Parent.Type.POINT)
+        if (this.parent == null ||
+                (this.parent.getType() != Parent.Type.ATTACHMENT &&
+                 this.parent.getType() != Parent.Type.POINT &&
+                 this.parent.getType() != Parent.Type.PATH))
             throw new DatastoreException("Invalid parent: "+this.parent);
     }
 
     public Parent getParent() {
         return this.parent;
+    }
+
+    private void validateUser() throws DatastoreException {
+        if (this.user == null)
+            throw new DatastoreException("NULL 'user' field!");
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public static void validateText(String text) throws DatastoreException {
+        Shortcuts.validateStringLength(
+                "text", text, DatastorePortal.COMMENT_MAX_LENGTH, false);
     }
 
     public String getText() {
@@ -112,51 +124,24 @@ public class Attachment {
         return this.visible;
     }
 
-    private void validateType() throws DatastoreException {
-        if (this.type == null)
-            throw new DatastoreException("NULL 'type' field!");
-    }
-
-    public Type getType() {
-        return this.type;
-    }
-
-    private void validateImage() throws DatastoreException {
-        if (this.type == Type.IMAGE && this.image == null)
-            throw new DatastoreException("NULL 'image' field!");
-    }
-
-    public Image getImage() throws DatastoreException {
-        if (this.type != Type.IMAGE)
-            throw new DatastoreException("Not of type image!");
-        return this.image;
-    }
-
-    public List<Comment> getComments() {
-        if (this.comments == null)
-            return new ArrayList<Comment>();
-        return this.comments;
-    }
-
     public boolean equals(Object that) {
-        return (that instanceof Attachment &&
-                this.id.equals(((Attachment) that).id));
+        return (that instanceof Comment && this.id.equals(((Comment) that).id));
     }
 
     public void deactivate() throws DatastoreException {
         if (this.isVisible())
             DatastorePortal.safeUpdate(this,
                     DatastorePortal.getDatastore()
-                            .createUpdateOperations(Attachment.class)
+                            .createUpdateOperations(Comment.class)
                             .set("visible", false));
     }
 
-    public static void deactivate(Query<Attachment> query)
+    public static void deactivate(Query<Comment> query)
             throws DatastoreException {
         DatastorePortal.safeUpdate(
                 query.filter("visible", true),
                 DatastorePortal.getDatastore()
-                        .createUpdateOperations(Attachment.class)
+                        .createUpdateOperations(Comment.class)
                         .set("visible", false));
     }
 }

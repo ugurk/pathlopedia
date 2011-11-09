@@ -1,8 +1,8 @@
 package com.pathlopedia.servlet.entity;
 
-import com.pathlopedia.ds.entity.Attachment;
-import com.pathlopedia.ds.entity.Coordinate;
-import com.pathlopedia.ds.entity.Image;
+import com.pathlopedia.datastore.entity.Attachment;
+import com.pathlopedia.datastore.entity.Coordinate;
+import com.pathlopedia.datastore.entity.Image;
 
 import java.util.Date;
 import java.util.List;

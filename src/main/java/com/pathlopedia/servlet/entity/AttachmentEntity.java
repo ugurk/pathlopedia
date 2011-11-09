@@ -1,6 +1,6 @@
 package com.pathlopedia.servlet.entity;
 
-import com.pathlopedia.ds.entity.Attachment;
+import com.pathlopedia.datastore.entity.Attachment;
 
 import java.util.Date;
 import java.util.List;

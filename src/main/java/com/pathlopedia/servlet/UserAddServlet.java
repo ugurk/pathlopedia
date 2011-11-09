@@ -1,8 +1,8 @@
 package com.pathlopedia.servlet;
 
 import com.google.code.morphia.Datastore;
-import com.pathlopedia.ds.DatastorePortal;
-import com.pathlopedia.ds.entity.User;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.datastore.entity.User;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.entity.ObjectIdEntity;
 import com.pathlopedia.servlet.response.WritableResponse;
@@ -17,9 +17,9 @@ public final class UserAddServlet extends PostMethodServlet {
             throws IOException, ServletException {
         // Create the user.
         User user = new User(
-                User.parseType(req.getParameter("type")),
-                req.getParameter("name"),
-                req.getParameter("email"));
+                User.parseType(getTrimmedParameter("type")),
+                getTrimmedParameter("name"),
+                getTrimmedParameter("email"));
 
         // Check if there exists any user with this e-mail.
         Datastore ds = DatastorePortal.getDatastore();

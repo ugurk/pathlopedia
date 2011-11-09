@@ -1,4 +1,4 @@
-package com.pathlopedia.ds;
+package com.pathlopedia.datastore;
 
 import java.io.IOException;
 

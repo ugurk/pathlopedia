@@ -9,26 +9,35 @@ import com.pathlopedia.servlet.response.WritableResponse;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Date;
 
-public final class PointDelServlet extends PostMethodServlet {
+public final class PointTitleSetServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin();
 
+        // Validate given title.
+        String title = getTrimmedParameter("title");
+        Point.validateTitle(title);
+
         // Fetch the point.
-        Point point = DatastorePortal.safeGet(
-                Point.class, getTrimmedParameter("point"));
+        Point point = DatastorePortal.safeGet(Point.class,
+                getTrimmedParameter("point"));
 
         // Check point visibility.
         if (!point.isVisible())
             throw new ServletException("Inactive point!");
 
-        // Validate user is the point owner.
+        // Check point owner.
         if (!point.getUser().equals(req.getSession().getAttribute("user")))
             throw new ServletException("Access denied!");
 
-        // Deactivate point.
-        point.deactivate();
+        // Update the point.
+        DatastorePortal.safeUpdate(point,
+                DatastorePortal.getDatastore()
+                        .createUpdateOperations(Point.class)
+                        .set("title", title)
+                        .set("updatedAt", new Date()));
 
         // Return success.
         return new JSONResponse(0);

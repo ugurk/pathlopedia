@@ -1,10 +1,10 @@
 package com.pathlopedia.servlet;
 
-import com.pathlopedia.ds.DatastorePortal;
-import com.pathlopedia.ds.entity.Corner;
-import com.pathlopedia.ds.entity.Path;
-import com.pathlopedia.ds.entity.Point;
-import com.pathlopedia.ds.entity.User;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.datastore.entity.Corner;
+import com.pathlopedia.datastore.entity.Path;
+import com.pathlopedia.datastore.entity.Point;
+import com.pathlopedia.datastore.entity.User;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.response.WritableResponse;
@@ -17,11 +17,11 @@ import java.util.Date;
 public final class PathPointAddServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
-        requireLogin(req);
+        requireLogin();
 
         // Fetch the path.
         Path path = DatastorePortal.safeGet(
-                Path.class, req.getParameter("path"));
+                Path.class, getTrimmedParameter("path"));
 
         // Check path visibility.
         if (!path.isVisible())
@@ -36,7 +36,7 @@ public final class PathPointAddServlet extends PostMethodServlet {
 
         // Fetch the point.
         Point point = DatastorePortal.safeGet(
-                Point.class, req.getParameter("point"));
+                Point.class, getTrimmedParameter("point"));
 
         // Check point visibility.
         if (!point.isVisible())

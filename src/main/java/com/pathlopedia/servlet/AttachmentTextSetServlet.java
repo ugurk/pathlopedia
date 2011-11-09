@@ -9,11 +9,16 @@ import com.pathlopedia.servlet.response.WritableResponse;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Date;
 
-public final class AttachmentDelServlet extends PostMethodServlet {
+public final class AttachmentTextSetServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin();
+
+        // Validate given text.
+        String text = getTrimmedParameter("text");
+        Attachment.validateText(text);
 
         // Fetch the attachment.
         Attachment attachment = DatastorePortal.safeGet(Attachment.class,
@@ -23,13 +28,16 @@ public final class AttachmentDelServlet extends PostMethodServlet {
         if (!attachment.isVisible())
             throw new ServletException("Inactive attachment!");
 
-        // Validate that user owns the attachment.
-        if (!attachment.getParent().getObject().getUser()
-                .equals(req.getSession().getAttribute("user")))
+        // Check attachment owner.
+        if (!attachment.getUser().equals(req.getSession().getAttribute("user")))
             throw new ServletException("Access denied!");
 
-        // Deactivate the attachment.
-        attachment.deactivate();
+        // Update the attachment.
+        DatastorePortal.safeUpdate(attachment,
+                DatastorePortal.getDatastore()
+                        .createUpdateOperations(Attachment.class)
+                        .set("text", text)
+                        .set("updatedAt", new Date()));
 
         // Return success.
         return new JSONResponse(0);

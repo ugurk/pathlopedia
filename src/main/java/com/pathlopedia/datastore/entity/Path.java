@@ -1,27 +1,22 @@
-package com.pathlopedia.ds.entity;
+package com.pathlopedia.datastore.entity;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Key;
 import com.google.code.morphia.annotations.*;
-import com.google.code.morphia.utils.IndexDirection;
-import com.pathlopedia.ds.DatastoreException;
-import com.pathlopedia.ds.DatastorePortal;
+import com.pathlopedia.datastore.DatastoreException;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.util.Shortcuts;
 import org.bson.types.ObjectId;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-@Entity("points")
-public class Point {
+@Entity("paths")
+public class Path implements IParent {
     @Id
     @SuppressWarnings("unused")
     private ObjectId id;
-
-    @Embedded
-    private Parent parent;
-
-    @Embedded
-    @Indexed(IndexDirection.GEO2D)
-    private Coordinate location;
 
     @Reference(lazy=true)
     private User user;
@@ -34,24 +29,18 @@ public class Point {
     private boolean visible;
 
     @Reference(lazy=true)
-    private List<Comment> comments;
+    private List<Corner> corners;
 
     @Reference(lazy=true)
-    private List<Attachment> attachments;
+    private List<Point> points;
 
-    @Transient
-    public final int MIN_TITLE_LENGTH = 1;
-
-    @Transient
-    public final int MAX_TITLE_LENGTH = 128;
+    @Reference(lazy=true)
+    private List<Comment> comments;
 
     @SuppressWarnings("unused")
-    private Point() {}
+    private Path() {}
 
-    public Point(Coordinate location, User user, String title, String text)
-            throws DatastoreException {
-        this.parent = null;
-        this.location = location;
+    public Path(User user, String title, String text) throws DatastoreException {
         this.user = user;
         this.title = title;
         this.text = text;
@@ -59,18 +48,18 @@ public class Point {
         this.scorers = null;
         this.updatedAt = new Date();
         this.visible = true;
+        this.corners = null;
+        this.points = null;
         this.comments = null;
-        this.attachments = null;
         validate();
     }
 
-    @PrePersist
     @PostLoad
+    @PrePersist
     private void validate() throws DatastoreException {
-        validateParent();
-        validateLocation();
         validateUser();
-        validateTitle();
+        validateTitle(this.title);
+        validateText(this.text);
         validateScore();
         validateUpdatedAt();
     }
@@ -86,24 +75,6 @@ public class Point {
         return this.id;
     }
 
-    private void validateParent() throws DatastoreException {
-        if (this.parent != null && this.parent.getType() != Parent.Type.PATH)
-            throw new DatastoreException("Invalid parent: "+this.parent);
-    }
-
-    public Parent getParent() {
-        return this.parent;
-    }
-
-    private void validateLocation() throws DatastoreException {
-        if (this.location == null)
-            throw new DatastoreException("NULL 'location' field!");
-    }
-
-    public Coordinate getLocation() {
-        return this.location;
-    }
-
     private void validateUser() throws DatastoreException {
         if (this.user == null)
             throw new DatastoreException("NULL 'user' field!");
@@ -113,17 +84,18 @@ public class Point {
         return this.user;
     }
 
-    private void validateTitle() throws DatastoreException {
-        if (this.title == null ||
-                this.title.length() < MIN_TITLE_LENGTH ||
-                this.title.length() > MAX_TITLE_LENGTH)
-            throw new DatastoreException(
-                    "'title' field ('"+this.title+"') must be between "+
-                    MIN_TITLE_LENGTH+" and "+MAX_TITLE_LENGTH+" characters.");
+    public static void validateTitle(String title) throws DatastoreException {
+        Shortcuts.validateStringLength(
+                "title", title, DatastorePortal.TITLE_MAX_LENGTH, false);
     }
 
     public String getTitle() {
         return this.title;
+    }
+
+    public static void validateText(String text) throws DatastoreException {
+        Shortcuts.validateStringLength(
+                "text", text, DatastorePortal.TEXT_MAX_LENGTH, true);
     }
 
     public String getText() {
@@ -158,20 +130,26 @@ public class Point {
         return this.visible;
     }
 
+    public List<Corner> getCorners() {
+        if (this.corners == null)
+            return new ArrayList<Corner>();
+        return this.corners;
+    }
+
+    public List<Point> getPoints() {
+        if (this.points == null)
+            return new ArrayList<Point>();
+        return this.points;
+    }
+
     public List<Comment> getComments() {
         if (this.comments == null)
             return new ArrayList<Comment>();
         return this.comments;
     }
 
-    public List<Attachment> getAttachments() {
-        if (this.attachments == null)
-            return new ArrayList<Attachment>();
-        return this.attachments;
-    }
-
     public boolean equals(Object that) {
-        return (that instanceof Point && this.id.equals(((Point) that).id));
+        return (that instanceof Path && this.id.equals(((Path) that).id));
     }
 
     public void deactivate() throws DatastoreException {
@@ -181,19 +159,23 @@ public class Point {
         // Get datastore handle.
         Datastore ds = DatastorePortal.getDatastore();
 
-        // Deactivate point.
+        // Deactivate path.
         DatastorePortal.safeUpdate(this,
-                ds.createUpdateOperations(Point.class)
+                ds.createUpdateOperations(Path.class)
                         .set("visible", false));
 
-        // Deactivate attachments.
-        Attachment.deactivate(
-                ds.find(Attachment.class)
-                        .filter("parent.point", this));
+        // Deactivate corners.
+        Corner.deactivate(
+                ds.find(Corner.class)
+                        .filter("parent.path", this));
 
         // Deactivate comments.
         Comment.deactivate(
                 ds.find(Comment.class)
-                        .filter("parent.point", this));
+                        .filter("parent.path", this));
+
+        // Deactivate points.
+        for (Point point : this.getPoints())
+            point.deactivate();
     }
 }

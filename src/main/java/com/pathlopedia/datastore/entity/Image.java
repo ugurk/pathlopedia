@@ -1,7 +1,7 @@
-package com.pathlopedia.ds.entity;
+package com.pathlopedia.datastore.entity;
 
 import com.google.code.morphia.annotations.*;
-import com.pathlopedia.ds.DatastoreException;
+import com.pathlopedia.datastore.DatastoreException;
 
 @Embedded
 public class Image {

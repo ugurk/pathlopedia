@@ -1,11 +1,11 @@
 package com.pathlopedia.servlet;
 
 import com.google.code.morphia.Datastore;
-import com.pathlopedia.ds.DatastorePortal;
-import com.pathlopedia.ds.entity.Coordinate;
-import com.pathlopedia.ds.entity.Corner;
-import com.pathlopedia.ds.entity.Path;
-import com.pathlopedia.ds.entity.Point;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.datastore.entity.Coordinate;
+import com.pathlopedia.datastore.entity.Corner;
+import com.pathlopedia.datastore.entity.Path;
+import com.pathlopedia.datastore.entity.Point;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 import com.pathlopedia.servlet.entity.PathListItemEntity;
 import com.pathlopedia.servlet.entity.PointListItemEntity;
@@ -23,16 +23,16 @@ import java.util.Set;
 public final class PathListGetServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
-        requireLogin(req);
+        requireLogin();
         Datastore ds = DatastorePortal.getDatastore();
 
         // Parse input arguments.
         Coordinate lo = new Coordinate(
-                Double.parseDouble(req.getParameter("lolat")),
-                Double.parseDouble(req.getParameter("lolng")));
+                Double.parseDouble(getTrimmedParameter("lolat")),
+                Double.parseDouble(getTrimmedParameter("lolng")));
         Coordinate hi = new Coordinate(
-                Double.parseDouble(req.getParameter("hilat")),
-                Double.parseDouble(req.getParameter("hilng")));
+                Double.parseDouble(getTrimmedParameter("hilat")),
+                Double.parseDouble(getTrimmedParameter("hilng")));
 
         // TODO Check path accessibilities.
 

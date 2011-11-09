@@ -1,4 +1,4 @@
-package com.pathlopedia.ds.entity;
+package com.pathlopedia.datastore.entity;
 
 import com.google.code.morphia.annotations.Embedded;
 

@@ -1,8 +1,8 @@
 package com.pathlopedia.servlet;
 
 import com.google.code.morphia.Key;
-import com.pathlopedia.ds.DatastorePortal;
-import com.pathlopedia.ds.entity.*;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.datastore.entity.*;
 import com.pathlopedia.servlet.entity.CommentEntity;
 import com.pathlopedia.servlet.entity.PathReferenceEntity;
 import com.pathlopedia.servlet.response.JSONResponse;
@@ -19,11 +19,11 @@ import java.util.List;
 public final class PointGetServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
-        requireLogin(req);
+        requireLogin();
 
         // Fetch the point object.
         Point point = DatastorePortal.safeGet(
-                Point.class, req.getParameter("point"));
+                Point.class, getTrimmedParameter("point"));
 
         // Check point visibility.
         if (!point.isVisible())

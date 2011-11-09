@@ -1,10 +1,10 @@
-package com.pathlopedia.ds.entity;
+package com.pathlopedia.datastore.entity;
 
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.PostLoad;
 import com.google.code.morphia.annotations.PrePersist;
 import com.google.code.morphia.annotations.Reference;
-import com.pathlopedia.ds.DatastoreException;
+import com.pathlopedia.datastore.DatastoreException;
 
 @Embedded
 public class Parent {
@@ -50,7 +50,6 @@ public class Parent {
 
     @PostLoad
     @PrePersist
-    @SuppressWarnings("unused")
     private void validate() throws DatastoreException {
         validateType();
         validateAttachment();
@@ -92,5 +91,14 @@ public class Parent {
 
     public Point getPoint() {
         return this.point;
+    }
+
+    public IParent getObject() throws DatastoreException {
+        switch (this.type) {
+            case ATTACHMENT: return this.attachment;
+            case POINT: return this.point;
+            case PATH: return this.path;
+            default: throw new DatastoreException("Unknown parent object!");
+        }
     }
 }

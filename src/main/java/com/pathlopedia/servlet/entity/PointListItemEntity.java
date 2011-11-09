@@ -1,6 +1,6 @@
 package com.pathlopedia.servlet.entity;
 
-import com.pathlopedia.ds.entity.Coordinate;
+import com.pathlopedia.datastore.entity.Coordinate;
 
 public final class PointListItemEntity {
     public final String id;

@@ -2,11 +2,11 @@ package com.pathlopedia.servlet;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Key;
-import com.pathlopedia.ds.DatastorePortal;
-import com.pathlopedia.ds.entity.Attachment;
-import com.pathlopedia.ds.entity.Comment;
-import com.pathlopedia.ds.entity.Parent;
-import com.pathlopedia.ds.entity.User;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.datastore.entity.Attachment;
+import com.pathlopedia.datastore.entity.Comment;
+import com.pathlopedia.datastore.entity.Parent;
+import com.pathlopedia.datastore.entity.User;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.entity.ObjectIdEntity;
 import com.pathlopedia.servlet.response.WritableResponse;
@@ -20,12 +20,12 @@ import java.util.Date;
 public final class AttachmentCommentAddServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
-        requireLogin(req);
+        requireLogin();
         Datastore ds = DatastorePortal.getDatastore();
 
         // Locate the attachment.
         Attachment attachment = DatastorePortal.safeGet(
-                Attachment.class, req.getParameter("attachment"));
+                Attachment.class, getTrimmedParameter("attachment"));
 
         // Check attachment visibility.
         if (!attachment.isVisible())
@@ -37,7 +37,7 @@ public final class AttachmentCommentAddServlet extends PostMethodServlet {
         Comment comment = new Comment(
                 new Parent(attachment),
                 (User) req.getSession().getAttribute("user"),
-                req.getParameter("text"));
+                getTrimmedParameter("text"));
         Key<Comment> commentKey = ds.save(comment);
 
         // Add created comment into the attachment.

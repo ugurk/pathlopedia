@@ -1,8 +1,8 @@
 package com.pathlopedia.servlet;
 
 import com.google.code.morphia.Datastore;
-import com.pathlopedia.ds.DatastorePortal;
-import com.pathlopedia.ds.entity.*;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.datastore.entity.*;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.entity.ObjectIdEntity;
 import com.pathlopedia.servlet.response.WritableResponse;
@@ -28,7 +28,7 @@ import java.util.Map;
 public final class AttachmentImageAddServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
-        requireLogin(req);
+        requireLogin();
         Datastore ds = DatastorePortal.getDatastore();
 
         // Parse multipart content.

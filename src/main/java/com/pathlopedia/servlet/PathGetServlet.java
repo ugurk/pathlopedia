@@ -1,8 +1,8 @@
 package com.pathlopedia.servlet;
 
 import com.google.code.morphia.Key;
-import com.pathlopedia.ds.DatastorePortal;
-import com.pathlopedia.ds.entity.*;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.datastore.entity.*;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 import com.pathlopedia.servlet.entity.CommentEntity;
 import com.pathlopedia.servlet.entity.PathEntity;
@@ -19,11 +19,11 @@ import java.util.List;
 public final class PathGetServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
-        requireLogin(req);
+        requireLogin();
 
         // Fetch the path.
         Path path = DatastorePortal.safeGet(
-                Path.class, req.getParameter("path"));
+                Path.class, getTrimmedParameter("path"));
 
         // Check path visibility.
         if (!path.isVisible())

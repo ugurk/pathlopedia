@@ -1,10 +1,10 @@
 package com.pathlopedia.servlet;
 
 import com.google.code.morphia.Key;
-import com.pathlopedia.ds.DatastorePortal;
-import com.pathlopedia.ds.entity.Attachment;
-import com.pathlopedia.ds.entity.Comment;
-import com.pathlopedia.ds.entity.User;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.datastore.entity.Attachment;
+import com.pathlopedia.datastore.entity.Comment;
+import com.pathlopedia.datastore.entity.User;
 import com.pathlopedia.servlet.entity.CommentEntity;
 import com.pathlopedia.servlet.entity.AttachmentEntity;
 import com.pathlopedia.servlet.response.JSONResponse;
@@ -20,11 +20,11 @@ import java.util.List;
 public final class AttachmentGetServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
-        requireLogin(req);
+        requireLogin();
 
         // Fetch the attachment.
         Attachment attachment = DatastorePortal.safeGet(
-                Attachment.class, req.getParameter("attachment"));
+                Attachment.class, getTrimmedParameter("attachment"));
 
         // Check attachment visibility.
         if (!attachment.isVisible())

@@ -1,30 +1,34 @@
 package com.pathlopedia.servlet;
 
 import com.google.code.morphia.Datastore;
-import com.pathlopedia.ds.DatastorePortal;
-import com.pathlopedia.ds.entity.Coordinate;
-import com.pathlopedia.ds.entity.Corner;
-import com.pathlopedia.ds.entity.Parent;
-import com.pathlopedia.ds.entity.Path;
+import com.pathlopedia.datastore.DatastorePortal;
+import com.pathlopedia.datastore.entity.Coordinate;
+import com.pathlopedia.datastore.entity.Corner;
+import com.pathlopedia.datastore.entity.Parent;
+import com.pathlopedia.datastore.entity.Path;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.response.WritableResponse;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public final class PathCornerSetServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
-        requireLogin(req);
+        requireLogin();
 
         // Fetch given path.
         Path path = DatastorePortal.safeGet(
-                Path.class, req.getParameter("path"));
+                Path.class, getTrimmedParameter("path"));
 
         // Check path visibility.
         if (!path.isVisible())
@@ -35,18 +39,19 @@ public final class PathCornerSetServlet extends PostMethodServlet {
             throw new ServletException("Access denied!");
 
         // Parse input corners.
-        String[] coordPairs = req.getParameterValues("corners");
         List<Corner> corners = new ArrayList<Corner>();
-        Parent parent = new Parent(path);
-        for (String coordPair : coordPairs) {
-            String[] coord = coordPair.split(",");
-            if (coord.length != 2)
-                throw new ServletException(
-                        "Invalid coordinate pair: "+coordPair);
-            corners.add(new Corner(parent,
-                    new Coordinate(
-                            Double.parseDouble(coord[0]),
-                            Double.parseDouble(coord[1]))));
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Iterator<JsonNode> it = mapper.readValue(
+                    getTrimmedParameter("corners"), ArrayNode.class)
+                    .getElements();
+            Parent parent = new Parent(path);
+            while (it.hasNext())
+                corners.add(new Corner(parent,
+                        mapper.readValue(it.next(), Coordinate.class)));
+        } catch (Exception e) {
+            throw new ServletException(
+                    "Invalid 'corners' parameter: "+e.getMessage());
         }
 
         // Deactivate existing corners.

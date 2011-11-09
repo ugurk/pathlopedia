@@ -1,4 +1,4 @@
-package com.pathlopedia.ds;
+package com.pathlopedia.datastore;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Key;
@@ -7,7 +7,7 @@ import com.google.code.morphia.query.Query;
 import com.google.code.morphia.query.UpdateOperations;
 import com.google.code.morphia.query.UpdateResults;
 import com.mongodb.Mongo;
-import com.pathlopedia.ds.entity.*;
+import com.pathlopedia.datastore.entity.*;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
@@ -17,8 +17,17 @@ public final class DatastorePortal {
     private Datastore ds;
     private static DatastorePortal conn = null;
 
-    public DatastorePortal() throws DatastoreException {
+    // TODO Move these variables into a resource/properties file.
+    public static final int TEXT_MAX_LENGTH = 10000;
+    public static final int TITLE_MAX_LENGTH = 100;
+    public static final int COMMENT_MAX_LENGTH = 1000;
+    public static final int NAME_MIN_LENGTH = 3;
+    public static final int NAME_MAX_LENGTH = 50;
+    public static final int MAIL_MAX_LENGTH = 100;
+
+    private DatastorePortal() throws DatastoreException {
         try {
+            // Connect to database.
             Morphia morphia = new Morphia();
             morphia
                     .map(Parent.class)
@@ -38,7 +47,7 @@ public final class DatastorePortal {
             this.ds = morphia.createDatastore(new Mongo(), dbname);
         } catch (Exception e) {
             throw new DatastoreException(
-                    "Data source connection failed: "+e.getMessage());
+                    "Datastore initialization failure: "+e.getMessage());
         }
     }
 
