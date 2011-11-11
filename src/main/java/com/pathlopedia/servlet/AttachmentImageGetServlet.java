@@ -27,7 +27,9 @@ public final class AttachmentImageGetServlet extends PostMethodServlet {
         if (!attachment.isVisible())
             return JPEGErrorResponse();
 
-        // TODO Check attachment accessibility.
+        // Check attachment accessibility.
+        if (!attachment.isAccessible(getSessionUser()))
+            return JPEGErrorResponse();
 
         // Parse requested image size.
         String size = getTrimmedParameter("imageSize");

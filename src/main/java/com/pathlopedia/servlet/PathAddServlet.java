@@ -2,7 +2,7 @@ package com.pathlopedia.servlet;
 
 import com.pathlopedia.datastore.DatastorePortal;
 import com.pathlopedia.datastore.entity.Path;
-import com.pathlopedia.datastore.entity.User;
+import com.pathlopedia.datastore.entity.ShareType;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.entity.ObjectIdEntity;
@@ -19,9 +19,10 @@ public final class PathAddServlet extends PostMethodServlet {
 
         // Create a path instance.
         Path path = new Path(
-                (User) req.getSession().getAttribute("user"),
+                getSessionUser(),
                 getTrimmedParameter("title"),
-                getTrimmedParameter("text"));
+                getTrimmedParameter("text"),
+                ShareType.parse(getTrimmedParameter("shareType")));
 
         // Save the created instance.
         DatastorePortal.safeSave(path);

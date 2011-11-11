@@ -4,7 +4,6 @@ import com.pathlopedia.datastore.DatastorePortal;
 import com.pathlopedia.datastore.entity.Comment;
 import com.pathlopedia.datastore.entity.Parent;
 import com.pathlopedia.datastore.entity.Point;
-import com.pathlopedia.datastore.entity.User;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.entity.ObjectIdEntity;
 import com.pathlopedia.servlet.response.WritableResponse;
@@ -28,12 +27,14 @@ public final class PointCommentAddServlet extends PostMethodServlet {
         if (!point.isVisible())
             throw new ServletException("Inactive point!");
 
-        // TODO Check point accessibility.
+        // Check point accessibility.
+        if (!point.isAccessible(getSessionUser()))
+            throw new ServletException("Access denied!");
 
         // Create and save the comment.
         Comment comment = new Comment(
                 new Parent(point),
-                (User) req.getSession().getAttribute("user"),
+                getSessionUser(),
                 getTrimmedParameter("text"));
         DatastorePortal.safeSave(comment);
 

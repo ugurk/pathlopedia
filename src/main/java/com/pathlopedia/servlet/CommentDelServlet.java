@@ -2,7 +2,6 @@ package com.pathlopedia.servlet;
 
 import com.pathlopedia.datastore.DatastorePortal;
 import com.pathlopedia.datastore.entity.Comment;
-import com.pathlopedia.datastore.entity.User;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.response.WritableResponse;
@@ -25,9 +24,7 @@ public final class CommentDelServlet extends PostMethodServlet {
             throw new ServletException("Inactive comment!");
 
         // Validate that user is the comment owner.
-        User user = (User) req.getSession().getAttribute("user");
-        if (!comment.getUser().equals(user) ||
-                !comment.getParent().getObject().getUser().equals(user))
+        if (!comment.isEditable(getSessionUser()))
             throw new ServletException("Access denied!");
 
         // Deactivate the comment.

@@ -19,9 +19,10 @@ public final class PointAddServlet extends PostMethodServlet {
         // Create the point.
         Point p = new Point(
                 Coordinate.parse(getTrimmedParameter("coordinate")),
-                (User) req.getSession().getAttribute("user"),
+                getSessionUser(),
                 getTrimmedParameter("title"),
-                getTrimmedParameter("text"));
+                getTrimmedParameter("text"),
+                ShareType.parse(getTrimmedParameter("shareType")));
 
         // Save the point.
         DatastorePortal.safeSave(p);

@@ -23,6 +23,7 @@ public class Path implements IParent {
 
     private String title;
     private String text;
+    private ShareType shareType;
     private int score;
     private List<Key<User>> scorers;
     private Date updatedAt;
@@ -40,10 +41,12 @@ public class Path implements IParent {
     @SuppressWarnings("unused")
     private Path() {}
 
-    public Path(User user, String title, String text) throws DatastoreException {
+    public Path(User user, String title, String text, ShareType shareType)
+            throws DatastoreException {
         this.user = user;
         this.title = title;
         this.text = text;
+        this.shareType = shareType;
         this.score = 0;
         this.scorers = null;
         this.updatedAt = new Date();
@@ -60,6 +63,7 @@ public class Path implements IParent {
         validateUser();
         validateTitle(this.title);
         validateText(this.text);
+        validateShareType(this.shareType);
         validateScore();
         validateUpdatedAt();
     }
@@ -100,6 +104,16 @@ public class Path implements IParent {
 
     public String getText() {
         return this.text;
+    }
+
+    public static void validateShareType(ShareType shareType)
+            throws DatastoreException {
+        if (shareType == null)
+            throw new DatastoreException("NULL 'shareType' field!");
+    }
+
+    public ShareType getShareType() {
+        return this.shareType;
     }
 
     private void validateScore() throws DatastoreException {
@@ -177,5 +191,19 @@ public class Path implements IParent {
         // Deactivate points.
         for (Point point : this.getPoints())
             point.deactivate();
+    }
+
+    public boolean isAccessible(User user) {
+        return getShareType().isAccessible(getUser(), user);
+    }
+
+    public boolean isEditable(User user) {
+        return getUser().equals(user);
+    }
+
+    public boolean isScorable(User user) {
+        return (!getUser().equals(user) &&
+                isAccessible(user) &&
+                !getScorers().contains(user.getKey()));
     }
 }

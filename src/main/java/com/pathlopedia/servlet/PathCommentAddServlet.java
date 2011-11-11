@@ -25,16 +25,18 @@ public final class PathCommentAddServlet extends PostMethodServlet {
         if (!path.isVisible())
             throw new ServletException("Inactive path!");
 
-        // TODO Check path accessibility.
+        // Check attachment accessibility.
+        if (!path.isAccessible(getSessionUser()))
+            throw new ServletException("Access denied!");
 
         // Create and save the comment.
         Comment comment = new Comment(
                 new Parent(path),
-                (User) req.getSession().getAttribute("user"),
+                getSessionUser(),
                 getTrimmedParameter("text"));
         DatastorePortal.safeSave(comment);
 
-        // Update the point.
+        // Update the path.
         DatastorePortal.safeUpdate(path,
                 DatastorePortal.getDatastore()
                         .createUpdateOperations(Path.class)

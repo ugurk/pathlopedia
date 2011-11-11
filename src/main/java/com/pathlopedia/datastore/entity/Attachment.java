@@ -37,7 +37,10 @@ public class Attachment implements IParent {
     @SuppressWarnings("unused")
     private Attachment() {}
 
-    public Attachment(Parent parent, String text, Image image)
+    public Attachment(
+            Parent parent,
+            String text,
+            Image image)
             throws DatastoreException {
         this.parent = parent;
         this.text = text;
@@ -145,10 +148,6 @@ public class Attachment implements IParent {
         return this.comments;
     }
 
-    public User getUser() throws DatastoreException {
-        return this.parent.getObject().getUser();
-    }
-
     public boolean equals(Object that) {
         return (that instanceof Attachment &&
                 this.id.equals(((Attachment) that).id));
@@ -169,5 +168,17 @@ public class Attachment implements IParent {
                 DatastorePortal.getDatastore()
                         .createUpdateOperations(Attachment.class)
                         .set("visible", false));
+    }
+
+    public boolean isAccessible(User user) throws DatastoreException {
+        return getParent().getObject().isAccessible(user);
+    }
+
+    public boolean isEditable(User user) throws DatastoreException {
+        return getParent().getObject().isEditable(user);
+    }
+
+    public boolean isScorable(User user) throws DatastoreException {
+        return getParent().getObject().isScorable(user);
     }
 }

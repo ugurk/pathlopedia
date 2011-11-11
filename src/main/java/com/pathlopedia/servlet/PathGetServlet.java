@@ -29,11 +29,12 @@ public final class PathGetServlet extends PostMethodServlet {
         if (!path.isVisible())
             throw new ServletException("Inactive path!");
 
-        // TODO Check path accessibility.
+        // Get session user.
+        User user = getSessionUser();
 
-        // Get user key.
-        @SuppressWarnings("unchecked")
-        Key<User> userKey = (Key<User>) req.getSession().getAttribute("userKey");
+        // Check attachment accessibility.
+        if (!path.isAccessible(user))
+            throw new ServletException("Access denied!");
 
         // Collect corners.
         List<Coordinate> corners = new ArrayList<Coordinate>();
@@ -44,7 +45,10 @@ public final class PathGetServlet extends PostMethodServlet {
         // Collect points.
         List<PointListItemEntity> points = new ArrayList<PointListItemEntity>();
         for (Point point : path.getPoints())
-            if (point.isVisible())
+            // Pay attention that, a point can be inaccessible, where the path
+            // the point is associated to is accessible. Hence, we need to
+            // check point accessibility separately.
+            if (point.isVisible() && point.isAccessible(user))
                 points.add(new PointListItemEntity(
                         point.getId().toString(),
                         point.getLocation(),
@@ -60,7 +64,7 @@ public final class PathGetServlet extends PostMethodServlet {
                         comment.getUser().getName(),
                         comment.getText(),
                         comment.getScore(),
-                        comment.getScorers().contains(userKey),
+                        comment.isScorable(user),
                         comment.getUpdatedAt()));
 
         // Pack and return the result.
@@ -71,7 +75,7 @@ public final class PathGetServlet extends PostMethodServlet {
                 path.getTitle(),
                 path.getText(),
                 path.getScore(),
-                path.getScorers().contains(userKey),
+                path.isScorable(user),
                 path.getUpdatedAt(),
                 corners,
                 points,

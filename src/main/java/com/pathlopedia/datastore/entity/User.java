@@ -1,6 +1,7 @@
 package com.pathlopedia.datastore.entity;
 
 import com.google.code.morphia.Datastore;
+import com.google.code.morphia.Key;
 import com.google.code.morphia.annotations.*;
 import com.pathlopedia.datastore.DatastoreException;
 import com.pathlopedia.datastore.DatastorePortal;
@@ -8,6 +9,7 @@ import com.pathlopedia.util.Shortcuts;
 import org.apache.commons.validator.EmailValidator;
 import org.bson.types.ObjectId;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,11 +19,14 @@ public class User {
     @SuppressWarnings("unused")
     private ObjectId id;
 
+    private static Key<User> key = null;
+
     private Type type;
     private String name;
     private String email;
     private Date updatedAt;
     private boolean visible;
+    private List<Key<User>> friends;
 
     public enum Type { FACEBOOK, GOOGLE }
 
@@ -35,6 +40,7 @@ public class User {
         this.email = email;
         this.updatedAt = new Date();
         this.visible = true;
+        this.friends = null;
         validate();
     }
 
@@ -56,6 +62,18 @@ public class User {
 
     public ObjectId getId() {
         return this.id;
+    }
+
+    /**
+     * Returns the user key. Key is cached in a static variable, hence, updates
+     * on the object are not propagated back. Use at your own risk.
+     *
+     * @return User key.
+     */
+    public Key<User> getKey() {
+        if (key == null)
+            key = new Key<User>(User.class, getId());
+        return key;
     }
 
     private void validateType() throws DatastoreException {
@@ -114,6 +132,16 @@ public class User {
 
     public boolean isVisible() {
         return this.visible;
+    }
+
+    public List<Key<User>> getFriends() {
+        if (this.friends == null)
+            return new ArrayList<Key<User>>();
+        return this.friends;
+    }
+
+    public boolean isFriend(User user) {
+        return getFriends().contains(user.getKey());
     }
 
     public boolean equals(Object that) {

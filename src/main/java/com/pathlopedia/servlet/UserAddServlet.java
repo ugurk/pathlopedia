@@ -1,6 +1,5 @@
 package com.pathlopedia.servlet;
 
-import com.google.code.morphia.Datastore;
 import com.pathlopedia.datastore.DatastorePortal;
 import com.pathlopedia.datastore.entity.User;
 import com.pathlopedia.servlet.response.JSONResponse;
@@ -22,13 +21,13 @@ public final class UserAddServlet extends PostMethodServlet {
                 getTrimmedParameter("email"));
 
         // Check if there exists any user with this e-mail.
-        Datastore ds = DatastorePortal.getDatastore();
-        User existingUser = ds.find(User.class)
+        User existingUser = DatastorePortal.getDatastore()
+                .find(User.class)
                 .filter("visible", true)
                 .filter("email", user.getEmail())
                 .get();
         if (existingUser != null)
-            throw new ServletException("E-mail address is in use!");
+            throw new ServletException("E-mail address is already in use!");
 
         // Save the user.
         DatastorePortal.safeSave(user);

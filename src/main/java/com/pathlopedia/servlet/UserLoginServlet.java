@@ -1,6 +1,5 @@
 package com.pathlopedia.servlet;
 
-import com.google.code.morphia.Key;
 import com.pathlopedia.datastore.DatastorePortal;
 import com.pathlopedia.datastore.entity.User;
 import com.pathlopedia.servlet.response.JSONResponse;
@@ -27,8 +26,6 @@ public final class UserLoginServlet extends PostMethodServlet {
         // Set appropriate session variables.
         HttpSession ses = req.getSession();
         ses.setAttribute("user", user);
-        ses.setAttribute("userId", user.getId().toString());
-        ses.setAttribute("userKey", new Key<User>(User.class, user.getId()));
 
         // Pack and return the result.
         return new JSONResponse(0,

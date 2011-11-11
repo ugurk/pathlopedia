@@ -1,6 +1,5 @@
 package com.pathlopedia.servlet;
 
-import com.pathlopedia.datastore.entity.*;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.response.WritableResponse;
@@ -14,12 +13,8 @@ public final class UserDelServlet extends PostMethodServlet {
             throws IOException, ServletException {
         requireLogin();
 
-        // Get user.
-        @SuppressWarnings("unchecked")
-        User user = (User) req.getSession().getAttribute("user");
-
         // Deactivate user.
-        user.deactivate();
+        getSessionUser().deactivate();
 
         // Logout user.
         req.getSession().invalidate();

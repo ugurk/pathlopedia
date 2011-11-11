@@ -2,10 +2,7 @@ package com.pathlopedia.servlet;
 
 import com.google.code.morphia.Datastore;
 import com.pathlopedia.datastore.DatastorePortal;
-import com.pathlopedia.datastore.entity.Coordinate;
-import com.pathlopedia.datastore.entity.Corner;
-import com.pathlopedia.datastore.entity.Path;
-import com.pathlopedia.datastore.entity.Point;
+import com.pathlopedia.datastore.entity.*;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 import com.pathlopedia.servlet.entity.PathListItemEntity;
 import com.pathlopedia.servlet.entity.PointListItemEntity;
@@ -30,8 +27,6 @@ public final class PathListGetServlet extends PostMethodServlet {
         Coordinate lo = Coordinate.parse(getTrimmedParameter("lo"));
         Coordinate hi = Coordinate.parse(getTrimmedParameter("hi"));
 
-        // TODO Check path accessibilities.
-
         // Fetch corners intersecting with this bounding box.
         List<Corner> corners = ds.find(Corner.class)
                 .filter("visible", true)
@@ -39,11 +34,14 @@ public final class PathListGetServlet extends PostMethodServlet {
                 .within(lo.getLat(), lo.getLng(), hi.getLat(), hi.getLng())
                 .asList();
 
+        // Get session user.
+        User user = getSessionUser();
+
         // Collect paths referenced by corners.
         Set<Path> paths = new HashSet<Path>();
         for (Corner corner : corners) {
             Path path = corner.getParent().getPath();
-            if (path.isVisible())
+            if (path.isVisible() && path.isAccessible(user))
                 paths.add(path);
         }
 
@@ -59,7 +57,9 @@ public final class PathListGetServlet extends PostMethodServlet {
             List<PointListItemEntity> pathPoints =
                     new ArrayList<PointListItemEntity>();
             for (Point point : path.getPoints())
-                if (point.isVisible())
+                // Points need a second accessibility check.
+                // See PathGetServlet for details.
+                if (point.isVisible() && point.isAccessible(user))
                     pathPoints.add(new PointListItemEntity(
                             point.getId().toString(),
                             point.getLocation(),

@@ -1,6 +1,5 @@
 package com.pathlopedia.servlet;
 
-import com.google.code.morphia.Key;
 import com.pathlopedia.datastore.DatastorePortal;
 import com.pathlopedia.datastore.entity.*;
 import com.pathlopedia.servlet.entity.CommentEntity;
@@ -29,12 +28,12 @@ public final class PointGetServlet extends PostMethodServlet {
         if (!point.isVisible())
             throw new ServletException("Inactive point!");
 
-        // TODO Check point accessibility.
+        // Get session user.
+        User user = getSessionUser();
 
-        // Get user key.
-        @SuppressWarnings("unchecked")
-        Key<User> userKey =
-                (Key<User>) req.getSession().getAttribute("userKey");
+        // Check point accessibility.
+        if (!point.isAccessible(user))
+            throw new ServletException("Access denied!");
 
         // Fetch comments.
         List<CommentEntity> comments =
@@ -47,7 +46,7 @@ public final class PointGetServlet extends PostMethodServlet {
                         comment.getUser().getName(),
                         comment.getText(),
                         comment.getScore(),
-                        comment.getScorers().contains(userKey),
+                        comment.isScorable(user),
                         comment.getUpdatedAt()));
 
         // Fetch attachments.
@@ -61,7 +60,7 @@ public final class PointGetServlet extends PostMethodServlet {
                         attachment.getType(),
                         attachment.getImage()));
 
-        // Create a path list item.
+        // Create a path reference. (For parent access.)
         Path path = point.getParent().getPath();
         PathReferenceEntity pathEntity = null;
         if (path != null)
@@ -78,7 +77,7 @@ public final class PointGetServlet extends PostMethodServlet {
                 point.getTitle(),
                 point.getText(),
                 point.getScore(),
-                point.getScorers().contains(userKey),
+                point.isScorable(user),
                 point.getUpdatedAt(),
                 pathEntity,
                 comments,

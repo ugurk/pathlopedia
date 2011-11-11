@@ -23,9 +23,8 @@ public final class AttachmentDelServlet extends PostMethodServlet {
         if (!attachment.isVisible())
             throw new ServletException("Inactive attachment!");
 
-        // Validate that user owns the attachment.
-        if (!attachment.getParent().getObject().getUser()
-                .equals(req.getSession().getAttribute("user")))
+        // Check attachment accessibility.
+        if (!attachment.isEditable(getSessionUser()))
             throw new ServletException("Access denied!");
 
         // Deactivate the attachment.

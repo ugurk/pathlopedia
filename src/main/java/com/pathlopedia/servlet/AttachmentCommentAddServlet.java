@@ -1,12 +1,10 @@
 package com.pathlopedia.servlet;
 
-import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Key;
 import com.pathlopedia.datastore.DatastorePortal;
 import com.pathlopedia.datastore.entity.Attachment;
 import com.pathlopedia.datastore.entity.Comment;
 import com.pathlopedia.datastore.entity.Parent;
-import com.pathlopedia.datastore.entity.User;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.entity.ObjectIdEntity;
 import com.pathlopedia.servlet.response.WritableResponse;
@@ -21,7 +19,6 @@ public final class AttachmentCommentAddServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin();
-        Datastore ds = DatastorePortal.getDatastore();
 
         // Locate the attachment.
         Attachment attachment = DatastorePortal.safeGet(
@@ -31,18 +28,21 @@ public final class AttachmentCommentAddServlet extends PostMethodServlet {
         if (!attachment.isVisible())
             throw new ServletException("Inactive attachment!");
 
-        // TODO Check attachment accessibility.
-        
+        // Check attachment accessibility.
+        if (!attachment.isAccessible(getSessionUser()))
+            throw new ServletException("Access denied!");
+
         // Create a new comment and save it.
         Comment comment = new Comment(
                 new Parent(attachment),
-                (User) req.getSession().getAttribute("user"),
+                getSessionUser(),
                 getTrimmedParameter("text"));
-        Key<Comment> commentKey = ds.save(comment);
+        Key<Comment> commentKey = DatastorePortal.safeSave(comment);
 
         // Add created comment into the attachment.
         DatastorePortal.safeUpdate(attachment,
-                ds.createUpdateOperations(Attachment.class)
+                DatastorePortal.getDatastore()
+                        .createUpdateOperations(Attachment.class)
                         .add("comments", commentKey)
                         .set("updatedAt", new Date()));
 

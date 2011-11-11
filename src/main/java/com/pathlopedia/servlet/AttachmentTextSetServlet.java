@@ -29,7 +29,7 @@ public final class AttachmentTextSetServlet extends PostMethodServlet {
             throw new ServletException("Inactive attachment!");
 
         // Check attachment owner.
-        if (!attachment.getUser().equals(req.getSession().getAttribute("user")))
+        if (!attachment.isEditable(getSessionUser()))
             throw new ServletException("Access denied!");
 
         // Update the attachment.

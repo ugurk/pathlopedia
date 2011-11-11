@@ -185,6 +185,16 @@
         <url-pattern>/f/path/score/set</url-pattern>
     </servlet-mapping>
 
+    <!-- /f/path/share-type/set -->
+    <servlet>
+        <servlet-name>PathShareTypeSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PathShareTypeSetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PathShareTypeSetServlet</servlet-name>
+        <url-pattern>/f/path/share-type/set</url-pattern>
+    </servlet-mapping>
+
     <!-- /f/path/text/set -->
     <servlet>
         <servlet-name>PathTextSetServlet</servlet-name>
@@ -273,6 +283,16 @@
     <servlet-mapping>
         <servlet-name>PointScoreSetServlet</servlet-name>
         <url-pattern>/f/point/score/set</url-pattern>
+    </servlet-mapping>
+
+    <!-- /f/point/share-type/set -->
+    <servlet>
+        <servlet-name>PointShareTypeSetServlet</servlet-name>
+        <servlet-class>com.pathlopedia.servlet.PointShareTypeSetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PointShareTypeSetServlet</servlet-name>
+        <url-pattern>/f/point/share-type/set</url-pattern>
     </servlet-mapping>
 
     <!-- /f/point/text/set -->

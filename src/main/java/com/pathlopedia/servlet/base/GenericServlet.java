@@ -1,5 +1,6 @@
 package com.pathlopedia.servlet.base;
 
+import com.pathlopedia.datastore.entity.User;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.response.WritableResponse;
 import com.pathlopedia.util.Logger;
@@ -40,5 +41,9 @@ abstract class GenericServlet extends HttpServlet {
     protected void requireLogin() throws ServletException {
         if (httpServletRequest.getSession().getAttribute("user") == null)
             throw new ServletException("Login required for this operation!");
+    }
+
+    protected User getSessionUser() {
+        return (User) httpServletRequest.getSession().getAttribute("user");
     }
 }

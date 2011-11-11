@@ -28,8 +28,8 @@ public final class PointTitleSetServlet extends PostMethodServlet {
         if (!point.isVisible())
             throw new ServletException("Inactive point!");
 
-        // Check point owner.
-        if (!point.getUser().equals(req.getSession().getAttribute("user")))
+        // Check point accessibility.
+        if (!point.isEditable(getSessionUser()))
             throw new ServletException("Access denied!");
 
         // Update the point.

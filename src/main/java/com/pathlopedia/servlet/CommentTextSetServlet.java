@@ -28,8 +28,8 @@ public final class CommentTextSetServlet extends PostMethodServlet {
         if (!comment.isVisible())
             throw new ServletException("Inactive comment!");
 
-        // Check comment owner.
-        if (!comment.getUser().equals(req.getSession().getAttribute("user")))
+        // Check comment accessibility.
+        if (!comment.isEditable(getSessionUser()))
             throw new ServletException("Access denied!");
 
         // Update the comment.

@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity("comments")
-public class Comment {
+public class Comment implements IEditable, IScorable {
     @Id
     @SuppressWarnings("unused")
     private ObjectId id;
@@ -143,5 +143,16 @@ public class Comment {
                 DatastorePortal.getDatastore()
                         .createUpdateOperations(Comment.class)
                         .set("visible", false));
+    }
+
+    public boolean isEditable(User user) throws DatastoreException {
+        return (getUser().equals(user) ||
+                getParent().getObject().isEditable(user));
+    }
+
+    public boolean isScorable(User user) throws DatastoreException {
+        return (!getUser().equals(user) &&
+                getParent().getObject().isAccessible(user) &&
+                !getScorers().contains(user.getKey()));
     }
 }

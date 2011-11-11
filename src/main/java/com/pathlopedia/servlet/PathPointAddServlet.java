@@ -1,10 +1,7 @@
 package com.pathlopedia.servlet;
 
 import com.pathlopedia.datastore.DatastorePortal;
-import com.pathlopedia.datastore.entity.Corner;
-import com.pathlopedia.datastore.entity.Path;
-import com.pathlopedia.datastore.entity.Point;
-import com.pathlopedia.datastore.entity.User;
+import com.pathlopedia.datastore.entity.*;
 import com.pathlopedia.servlet.base.PostMethodServlet;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.response.WritableResponse;
@@ -27,11 +24,8 @@ public final class PathPointAddServlet extends PostMethodServlet {
         if (!path.isVisible())
             throw new ServletException("Inactive path!");
 
-        // Get current user.
-        User user = (User) req.getSession().getAttribute("user");
-
-        // Validate the path user.
-        if (!path.getUser().equals(user))
+        // Check path accessibility.
+        if (!path.isEditable(getSessionUser()))
             throw new ServletException("Access denied!");
 
         // Fetch the point.
@@ -42,14 +36,13 @@ public final class PathPointAddServlet extends PostMethodServlet {
         if (!point.isVisible())
             throw new ServletException("Inactive point!");
 
-        // Validate the point user.
-        if (!point.getUser().equals(user))
+        // Check point accessibility.
+        if (!point.isEditable(getSessionUser()))
             throw new ServletException("Access denied!");
 
         // Check if the point is already included.
         if (path.getPoints().contains(point))
-            throw new ServletException(
-                    "Point is already included by the path!");
+            return new JSONResponse(0);
 
         // Validate that the point is placed on a corner.
         boolean isCorner = false;
@@ -63,11 +56,12 @@ public final class PathPointAddServlet extends PostMethodServlet {
                     "Point doesn't overlap with a corner!");
 
         // Update the point.
+        Parent parent = new Parent(path);
         DatastorePortal.safeUpdate(point,
                 DatastorePortal.getDatastore()
                         .createUpdateOperations(Point.class)
                         .set("updatedAt", new Date())
-                        .set("path", path));
+                        .set("parent", parent));
 
         // Update the path.
         DatastorePortal.safeUpdate(path,

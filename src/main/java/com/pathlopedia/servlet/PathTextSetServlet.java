@@ -28,8 +28,8 @@ public final class PathTextSetServlet extends PostMethodServlet {
         if (!path.isVisible())
             throw new ServletException("Inactive path!");
 
-        // Check path owner.
-        if (!path.getUser().equals(req.getSession().getAttribute("user")))
+        // Check path accessibility.
+        if (!path.isEditable(getSessionUser()))
             throw new ServletException("Access denied!");
 
         // Update the path.

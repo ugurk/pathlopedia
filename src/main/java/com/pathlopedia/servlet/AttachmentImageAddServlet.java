@@ -1,6 +1,5 @@
 package com.pathlopedia.servlet;
 
-import com.google.code.morphia.Datastore;
 import com.pathlopedia.datastore.DatastorePortal;
 import com.pathlopedia.datastore.entity.*;
 import com.pathlopedia.servlet.response.JSONResponse;
@@ -29,7 +28,6 @@ public final class AttachmentImageAddServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin();
-        Datastore ds = DatastorePortal.getDatastore();
 
         // Parse multipart content.
         if (!ServletFileUpload.isMultipartContent(req))
@@ -44,10 +42,9 @@ public final class AttachmentImageAddServlet extends PostMethodServlet {
         if (!point.isVisible())
             throw new ServletException("Inactive point!");
 
-        // Check if we are the owner of this point.
-        if (!point.getUser().equals(req.getSession().getAttribute("user")))
-            throw new ServletException(
-                    "User doesn't have required privileges!");
+        // Check point accessibility.
+        if (!point.isEditable(getSessionUser()))
+            throw new ServletException("Access denied!");
 
         // Read delivered image and resize it to appropriate sizes.
         BufferedImage image = ImageIO.read(
@@ -66,7 +63,8 @@ public final class AttachmentImageAddServlet extends PostMethodServlet {
         DatastorePortal.safeSave(smallImage);
         DatastorePortal.safeSave(attachment);
         DatastorePortal.safeUpdate(point,
-                ds.createUpdateOperations(Point.class)
+                DatastorePortal.getDatastore()
+                        .createUpdateOperations(Point.class)
                         .add("attachments", attachment)
                         .set("updatedAt", new Date()));
         return new JSONResponse(0, new ObjectIdEntity(attachment.getId()));

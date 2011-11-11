@@ -20,12 +20,8 @@ public final class UserNameSetServlet extends PostMethodServlet {
         String name = getTrimmedParameter("name");
         User.validateName(name);
 
-        // Get user.
-        @SuppressWarnings("unchecked")
-        User user = (User) req.getSession().getAttribute("user");
-
         // Update the user.
-        DatastorePortal.safeUpdate(user,
+        DatastorePortal.safeUpdate(getSessionUser(),
                 DatastorePortal.getDatastore()
                         .createUpdateOperations(User.class)
                         .set("name", name)

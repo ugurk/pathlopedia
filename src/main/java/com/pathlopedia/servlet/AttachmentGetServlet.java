@@ -1,6 +1,5 @@
 package com.pathlopedia.servlet;
 
-import com.google.code.morphia.Key;
 import com.pathlopedia.datastore.DatastorePortal;
 import com.pathlopedia.datastore.entity.Attachment;
 import com.pathlopedia.datastore.entity.Comment;
@@ -30,14 +29,14 @@ public final class AttachmentGetServlet extends PostMethodServlet {
         if (!attachment.isVisible())
             throw new ServletException("Inactive attachment!");
 
-        // TODO Check attachment accessibility.
+        // Get session user.
+        User user = getSessionUser();
 
-        // Get user key.
-        @SuppressWarnings("unchecked")
-        Key<User> userKey =
-                (Key<User>) req.getSession().getAttribute("userKey");
+        // Check attachment accessibility.
+        if (!attachment.isAccessible(user))
+            throw new ServletException("Access denied!");
 
-        // Fetch attachment comments and pack properly.
+        // Fetch attachment comments and pack them properly.
         List<CommentEntity> comments = new ArrayList<CommentEntity>();
         for (Comment comment : attachment.getComments())
             if (comment.isVisible())
@@ -47,7 +46,7 @@ public final class AttachmentGetServlet extends PostMethodServlet {
                         comment.getUser().getName(),
                         comment.getText(),
                         comment.getScore(),
-                        comment.getScorers().contains(userKey),
+                        comment.isScorable(user),
                         comment.getUpdatedAt()));
 
         // Pack and return the result.
@@ -55,7 +54,7 @@ public final class AttachmentGetServlet extends PostMethodServlet {
                 attachment.getId().toString(),
                 attachment.getText(),
                 attachment.getScore(),
-                attachment.getScorers().contains(userKey),
+                attachment.isScorable(user),
                 attachment.getUpdatedAt(),
                 comments,
                 attachment.getType()));

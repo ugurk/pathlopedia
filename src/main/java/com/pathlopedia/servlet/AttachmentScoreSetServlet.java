@@ -1,11 +1,8 @@
 package com.pathlopedia.servlet;
 
-import com.google.code.morphia.Datastore;
-import com.google.code.morphia.Key;
 import com.google.code.morphia.query.UpdateOperations;
 import com.pathlopedia.datastore.DatastorePortal;
 import com.pathlopedia.datastore.entity.Attachment;
-import com.pathlopedia.datastore.entity.User;
 import com.pathlopedia.servlet.response.JSONResponse;
 import com.pathlopedia.servlet.response.WritableResponse;
 import com.pathlopedia.servlet.base.PostMethodServlet;
@@ -19,7 +16,6 @@ public final class AttachmentScoreSetServlet extends PostMethodServlet {
     protected WritableResponse process(HttpServletRequest req)
             throws IOException, ServletException {
         requireLogin();
-        Datastore ds = DatastorePortal.getDatastore();
 
         // Locate the given attachment.
         Attachment attachment = DatastorePortal.safeGet(
@@ -29,28 +25,15 @@ public final class AttachmentScoreSetServlet extends PostMethodServlet {
         if (!attachment.isVisible())
             throw new ServletException("Inactive attachment!");
 
-        // Check if user tries to vote for his/her own entity.
-        if (attachment.getParent().getPoint().getUser()
-                .equals(req.getSession().getAttribute("user")))
-            throw new ServletException(
-                    "You cannot vote for your own attachment!");
-
-        // TODO Check attachment accessibility.
-
-        // Get user key.
-        @SuppressWarnings("unchecked")
-        Key<User> userKey =
-                (Key<User>) req.getSession().getAttribute("userKey");
-
-        // Check if user had previously scored.
-        if (attachment.getScorers().contains(userKey))
-            throw new ServletException(
-                    "You have already scored this attachment!");
+        // Check attachment scorability.
+        if (!attachment.isScorable(getSessionUser()))
+            throw new ServletException("Access denied!");
 
         // Parse user input and create an appropriate update operation set.
         int step = Integer.parseInt(getTrimmedParameter("step"));
-        UpdateOperations<Attachment> ops = ds.createUpdateOperations(
-                Attachment.class).add("scorers", userKey);
+        UpdateOperations<Attachment> ops = DatastorePortal.getDatastore()
+                .createUpdateOperations(Attachment.class)
+                .add("scorers", getSessionUser().getKey());
         if (step == 1) ops = ops.inc("score");
         else if (step == -1) ops = ops.dec("score");
         else throw new ServletException("Invalid score step size: "+step);

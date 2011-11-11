@@ -34,11 +34,11 @@ public final class PathCornerSetServlet extends PostMethodServlet {
         if (!path.isVisible())
             throw new ServletException("Inactive path!");
 
-        // Check if we are the owner of this path.
-        if (!path.getUser().equals(req.getSession().getAttribute("user")))
+        // Check path accessibility.
+        if (!path.isEditable(getSessionUser()))
             throw new ServletException("Access denied!");
 
-        // Parse input corners.
+        // Parse input (which is, a JSON vector of Coordinates) corners.
         List<Corner> corners = new ArrayList<Corner>();
         try {
             ObjectMapper mapper = new ObjectMapper();
