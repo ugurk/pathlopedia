@@ -30,4 +30,12 @@ public final class Shortcuts {
         if (out.length() == 0) return null;
         return out;
     }
+
+    public static boolean parseBoolean(String s) {
+        if (s != null) {
+            if (s.equals("true")) return true;
+            if (s.equals("false")) return false;
+        }
+        throw new IllegalArgumentException("Invalid boolean expression: " + s);
+    }
 }
