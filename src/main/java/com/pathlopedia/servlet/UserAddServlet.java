@@ -16,7 +16,6 @@ public final class UserAddServlet extends PostMethodServlet {
             throws IOException, ServletException {
         // Create the user.
         User user = new User(
-                User.parseType(getTrimmedParameter("type")),
                 getTrimmedParameter("name"),
                 getTrimmedParameter("email"));
 

@@ -21,21 +21,16 @@ public class User {
 
     private static Key<User> key = null;
 
-    private Type type;
     private String name;
     private String email;
     private Date updatedAt;
     private boolean visible;
     private List<Key<User>> friends;
 
-    public enum Type { FACEBOOK, GOOGLE }
-
     @SuppressWarnings("unused")
     private User() {}
 
-    public User(Type type, String name, String email)
-            throws DatastoreException {
-        this.type = type;
+    public User(String name, String email) throws DatastoreException {
         this.name = name;
         this.email = email;
         this.updatedAt = new Date();
@@ -47,7 +42,6 @@ public class User {
     @PrePersist
     @PostLoad
     private void validate() throws DatastoreException {
-        validateType();
         validateName(this.name);
         validateEmail();
         validateUpdatedAt();
@@ -74,24 +68,6 @@ public class User {
         if (key == null)
             key = new Key<User>(User.class, getId());
         return key;
-    }
-
-    private void validateType() throws DatastoreException {
-        if (this.type == null)
-            throw new DatastoreException("NULL 'type' field!");
-    }
-
-    public static Type parseType(String type)
-            throws IllegalArgumentException {
-        if (type == null)
-            throw new IllegalArgumentException("NULL 'type' field!");
-        if (type.equals("FACEBOOK")) return Type.FACEBOOK;
-        else if (type.equals("GOOGLE")) return Type.GOOGLE;
-        else throw new IllegalArgumentException("Invalid user type: "+type);
-    }
-
-    public Type getType() {
-        return this.type;
     }
 
     public static void validateName(String name) throws DatastoreException {
