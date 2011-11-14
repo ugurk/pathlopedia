@@ -27,7 +27,7 @@ public final class Shortcuts {
     public static String trim(String inp) {
         if (inp == null) return null;
         String out = inp.trim();
-        if (out.length() == 0) return null;
+        if (out.isEmpty()) return null;
         return out;
     }
 
