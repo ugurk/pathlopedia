@@ -1,0 +1,27 @@
+/*
+    pathlopedia css file
+*/
+html{
+    height: 100%;
+}
+
+body{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#ppmap{
+    height: 100%;
+    width: 100%;
+}
+
+/* pathlopedia title style*/
+#pptitle{
+    position: absolute;
+    left: 70px;
+    bottom: 7px;
+    font-size: 16px;
+    color: #FFF;
+    font-family: Trebuchet MS;
+}
